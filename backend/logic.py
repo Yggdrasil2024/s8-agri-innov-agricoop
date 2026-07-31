@@ -100,7 +100,51 @@ def calculer_indicateurs_globaux(livraisons, ventes, paiements):
         }
     """
          # TODO : à compléter
-    pass
+    # Quantité totale livrée
+    total_livraisons = 0
+    for livraison in livraisons:
+        total_livraisons += livraison["quantite"]
+
+    # Quantité totale vendue
+    total_ventes = 0
+    for vente in ventes:
+        total_ventes += vente["quantite"]
+
+    # Stock restant
+    stock_total = total_livraisons - total_ventes
+
+    # Montant total dû aux membres
+    montant_du = 0
+    for livraison in livraisons:
+        culture = livraison["culture"]
+        quantite = livraison["quantite"]
+        prix = PRIX_ACHAT_KG[culture]
+        montant_du += quantite * prix
+
+    # Paiements déjà effectués
+    total_paiements = 0
+    for paiement in paiements:
+        total_paiements += paiement["montant"]
+
+    montant_du_total = montant_du - total_paiements
+
+    # Membres actifs (sans doublons)
+    membres_actifs = set()
+    for livraison in livraisons:
+        membres_actifs.add(livraison["membre_id"])
+
+    nb_membres_actifs = len(membres_actifs)
+
+    # Nombre de livraisons
+    nb_livraisons_mois = len(livraisons)
+
+    return {
+        "stock_total": stock_total,
+        "montant_du_total": montant_du_total,
+        "nb_membres_actifs": nb_membres_actifs,
+        "nb_livraisons_mois": nb_livraisons_mois,
+    }
+
 
 
 def calculer_livraisons_par_jour_semaine(livraisons):
@@ -120,7 +164,19 @@ def calculer_livraisons_par_jour_semaine(livraisons):
         sortie -> {"2026-07-08": 50}
     """
          # TODO : à compléter
-    pass
+    volumes_par_date = {}
+
+    for livraison in livraisons:
+        date = livraison["date"]
+        quantite = livraison["quantite"]
+
+        if date in volumes_par_date:
+            volumes_par_date[date] += quantite
+        else:
+            volumes_par_date[date] = quantite
+
+    return volumes_par_date
+    
 
 
 def classer_membres_par_production(livraisons):
@@ -158,8 +214,36 @@ def classer_membres_par_production(livraisons):
         ]
     """
          # TODO : à compléter
-    pass
+    volumes_membres = {}
 
+    # Calculer le volume total livré par chaque membre
+    for livraison in livraisons:
+        membre_id = livraison["membre_id"]
+        quantite = livraison["quantite"]
+
+        if membre_id in volumes_membres:
+            volumes_membres[membre_id] += quantite
+        else:
+            volumes_membres[membre_id] = quantite
+
+    # Transformer le dictionnaire en liste de dictionnaires
+    classement = []
+
+    for membre_id, volume_total in volumes_membres.items():
+        classement.append({
+            "membre_id": membre_id,
+            "volume_total": volume_total
+        })
+
+    # Trier du plus grand volume au plus petit
+    classement.sort(
+        key=lambda membre: membre["volume_total"],
+        reverse=True
+    )
+
+    return classement
+
+    
 
 def calculer_statistiques_globales(livraisons, ventes):
     """
@@ -194,7 +278,36 @@ def calculer_statistiques_globales(livraisons, ventes):
         sortie -> {"Manioc": {"volume_total": 100, "valeur_totale": 11000}}
     """
          # TODO : à compléter
-    pass
+    rendement = {}
+
+    # Calcul du volume total livré par culture
+    for livraison in livraisons:
+        culture = livraison["culture"]
+        quantite = livraison["quantite"]
+
+        if culture not in rendement:
+            rendement[culture] = {
+                "volume_total": 0,
+                "valeur_totale": 0
+            }
+
+        rendement[culture]["volume_total"] += quantite
+
+    # Calcul de la valeur totale des ventes par culture
+    for vente in ventes:
+        culture = vente["culture"]
+        quantite = vente["quantite"]
+        prix_kg = vente["prix_kg"]
+
+        if culture not in rendement:
+            rendement[culture] = {
+                "volume_total": 0,
+                "valeur_totale": 0
+            }
+
+        rendement[culture]["valeur_totale"] += quantite * prix_kg
+
+    return rendement
 
 
 def generer_indicateurs_rapport_bailleur(livraisons, ventes, paiements):
@@ -240,6 +353,47 @@ def generer_indicateurs_rapport_bailleur(livraisons, ventes, paiements):
                    "taux_regularite_paiements": 50, "nb_membres_actifs": 2}
     """
          # TODO : à compléter
+    # Calcul du volume total livré pendant la période
+    volume_total_periode = 0
+
+    for livraison in livraisons:
+        volume_total_periode += livraison["quantite"]
+
+    # Calcul du montant total des ventes
+    montant_ventes_periode = 0
+
+    for vente in ventes:
+        montant_ventes_periode += vente["quantite"] * vente["prix_kg"]
+
+    # Récupérer les membres actifs (sans doublons)
+    membres_actifs = set()
+
+    for livraison in livraisons:
+        membres_actifs.add(livraison["membre_id"])
+
+    nb_membres_actifs = len(membres_actifs)
+
+    # Récupérer les membres ayant reçu au moins un paiement
+    membres_payes = set()
+
+    for paiement in paiements:
+        membres_payes.add(paiement["membre_id"])
+
+    # Calcul du taux de régularité des paiements
+    if nb_membres_actifs == 0:
+        taux_regularite_paiements = 0
+    else:
+        taux_regularite_paiements = round(
+            (len(membres_payes) / nb_membres_actifs) * 100
+        )
+
+    # Retour uniquement des données statistiques (aucune donnée nominative)
+    return {
+        "volume_total_periode": volume_total_periode,
+        "montant_ventes_periode": montant_ventes_periode,
+        "taux_regularite_paiements": taux_regularite_paiements,
+        "nb_membres_actifs": nb_membres_actifs
+    }
     pass
 
 
@@ -264,9 +418,46 @@ def identifier_top_acheteur(ventes, acheteurs):
         acheteurs -> [{"id": 1, "nom": "Christiane Nkaya"}, {"id": 2, "nom": "Talangaï"}]
         sortie    -> {"acheteur_nom": "Christiane Nkaya", "volume_total": 150}
     """
-         # TODO : à compléter
-    pass
+    # Aucun achat enregistré
+    if len(ventes) == 0:
+        return {
+            "acheteur_nom": None,
+            "volume_total": 0
+        }
 
+    # Calcul du volume total acheté par chaque acheteur
+    volumes_acheteurs = {}
+
+    for vente in ventes:
+        acheteur_id = vente["acheteur_id"]
+        quantite = vente["quantite"]
+
+        if acheteur_id in volumes_acheteurs:
+            volumes_acheteurs[acheteur_id] += quantite
+        else:
+            volumes_acheteurs[acheteur_id] = quantite
+
+    # Recherche de l'acheteur ayant le plus grand volume
+    meilleur_acheteur_id = None
+    volume_max = 0
+
+    for acheteur_id, volume in volumes_acheteurs.items():
+        if volume > volume_max:
+            volume_max = volume
+            meilleur_acheteur_id = acheteur_id
+
+    # Recherche du nom de l'acheteur
+    acheteur_nom = None
+
+    for acheteur in acheteurs:
+        if acheteur["id"] == meilleur_acheteur_id:
+            acheteur_nom = acheteur["nom"]
+            break
+
+    return {
+        "acheteur_nom": acheteur_nom,
+        "volume_total": volume_max
+    }  
 
 # ========================================================================
 # ZONE B — Membres & Livraisons
@@ -536,8 +727,26 @@ def calculer_stock_disponible(livraisons, ventes):
 
         sortie -> {"Manioc": 70, "Maïs": 0, "Arachide": 0}
     """
-         # TODO : à compléter
-    pass
+         # TODO : 
+    # Initialiser le stock des 3 cultures à 0
+    stock = {}
+
+    for culture in PRIX_ACHAT_KG:
+        stock[culture] = 0
+
+    # Ajouter les quantités livrées
+    for livraison in livraisons:
+        culture = livraison["culture"]
+        quantite = livraison["quantite"]
+        stock[culture] += quantite
+
+    # Retirer les quantités vendues
+    for vente in ventes:
+        culture = vente["culture"]
+        quantite = vente["quantite"]
+        stock[culture] -= quantite
+
+    return stock
 
 
 def verifier_stock_avant_vente(vente, stock_disponible):
@@ -567,7 +776,13 @@ def verifier_stock_avant_vente(vente, stock_disponible):
           -> True  (cas limite : égalité exacte, la vente est acceptée)
     """
          # TODO : à compléter
-    pass
+    culture = vente["culture"]
+    quantite = vente["quantite"]
+
+    if quantite <= stock_disponible.get(culture, 0):
+        return True
+    else:
+        return False
 
 
 def calculer_marge_vente(vente):
@@ -594,9 +809,16 @@ def calculer_marge_vente(vente):
 
         sortie -> 10500
     """
-         # TODO : à compléter
-    pass
+         # TODO :
+    culture = vente["culture"]
+    quantite = vente["quantite"]
+    prix_kg = vente["prix_kg"]
 
+    prix_achat = PRIX_ACHAT_KG[culture]
+
+    marge = (prix_kg - prix_achat) * quantite
+
+    return marge
 
 def verifier_paiement_valide(paiement, solde_du):
     """
@@ -622,8 +844,22 @@ def verifier_paiement_valide(paiement, solde_du):
         paiement={"montant": 50000}, solde_du=20000
         -> ["Le montant dépasse le solde dû (20000 FCFA)."]
     """
-         # TODO : à compléter
-    pass
+         # TODO :
+    erreurs = []
+
+    montant = paiement["montant"]
+
+    # Vérifier que le montant est positif
+    if montant <= 0:
+        erreurs.append("Le montant doit être strictement positif.")
+
+    # Vérifier que le paiement ne dépasse pas le solde dû
+    if montant > solde_du:
+        erreurs.append(
+            f"Le montant dépasse le solde dû ({solde_du} FCFA)."
+        )
+
+    return erreurs
 
 
 def calculer_moyenne_prix_vente(ventes, culture):
@@ -659,8 +895,27 @@ def calculer_moyenne_prix_vente(ventes, culture):
 
         sortie -> 210
     """
-         # TODO : à compléter
-    pass
+         # TODO :
+    total_valeur = 0
+    total_quantite = 0
+
+    # Parcourir toutes les ventes
+    for vente in ventes:
+        if vente["culture"] == culture:
+            quantite = vente["quantite"]
+            prix_kg = vente["prix_kg"]
+
+            total_valeur += quantite * prix_kg
+            total_quantite += quantite
+
+    # Si aucune vente trouvée pour cette culture
+    if total_quantite == 0:
+        return 0
+
+    # Calcul de la moyenne pondérée
+    moyenne = round(total_valeur / total_quantite)
+
+    return moyenne
 
 
 # ========================================================================
