@@ -505,8 +505,7 @@ def calculer_solde_membre(membre_id, livraisons, paiements):
 
         sortie -> 23000
     """
-         # TODO : à compléter
-    pass
+    return sum(l["quantite"] * PRIX_ACHAT_KG[l["culture"]] for l in livraisons if l["membre_id"] == membre_id) - sum(p["montant"] for p in paiements if p["membre_id"] == membre_id)
 
 
 def detecter_membres_inactifs(membres, livraisons, jours_seuil=90):
@@ -536,9 +535,8 @@ def detecter_membres_inactifs(membres, livraisons, jours_seuil=90):
 
         sortie -> [{"membre_id": 2, "nom": "Sandra Malonga"}]
     """
-         # TODO : à compléter
-    pass
-
+    return [{"membre_id": m["id"], "nom": m["nom"]} for m in membres if not any(l["membre_id"] == m["id"] for l in livraisons)]
+    
 
 def detecter_anomalie_livraison(livraison):
     """
@@ -571,9 +569,16 @@ def detecter_anomalie_livraison(livraison):
         livraison = {"membre_id": 1, "culture": "Manioc", "quantite": 100}
         sortie -> []
     """
+    
     anomalies = []
-         # TODO : à compléter
-    pass
+    if livraison.get("quantite", 0) <= 0:
+        anomalies.append("Quantité invalide : doit être strictement positive.")
+    if livraison.get("culture") not in PRIX_ACHAT_KG:
+        anomalies.append(f"Culture inconnue : {livraison.get('culture')}.")
+    if not livraison.get("membre_id"):
+        anomalies.append("Aucun membre rattaché à cette livraison.")
+    return anomalies
+    
 
 
 def generer_recu(membre_nom, montant):
@@ -594,8 +599,9 @@ def generer_recu(membre_nom, montant):
         generer_recu("Jean Mabiala", 0)
           -> "Aucun montant à verser pour Jean Mabiala."
     """
-         # TODO : à compléter
-    pass
+    if montant <= 0:
+        return f"Aucun montant à verser pour {membre_nom}."
+    return f"Reçu - {membre_nom} : paiement de {montant} FCFA effectué."
 
 
 def calculer_historique_paiements_membre(membre_id, paiements):
@@ -619,8 +625,7 @@ def calculer_historique_paiements_membre(membre_id, paiements):
         sortie    -> [{"membre_id": 1, "montant": 15000, "date": "2026-07-14"},
                       {"membre_id": 1, "montant": 5000, "date": "2026-07-05"}]
     """
-         # TODO : à compléter
-    pass
+    return sorted([p for p in paiements if p["membre_id"] == membre_id], key=lambda x: x["date"], reverse=True)
 
 
 def rechercher_membre_similaire(nom_complet, membres):
@@ -657,8 +662,7 @@ def rechercher_membre_similaire(nom_complet, membres):
         rechercher_membre_similaire("Marie Koumba", membres)
         -> None   (aucun membre existant ne porte ce nom)
     """
-         # TODO : à compléter
-    pass
+    return next((m for m in membres if " ".join(m["nom"].lower().split()) == " ".join(nom_complet.lower().split())), None)
 
 
 def valider_nouveau_membre(donnees):
@@ -693,9 +697,17 @@ def valider_nouveau_membre(donnees):
         donnees = {"nom": "Koumba", "prenom": "Marie", "village": "Séo", "contact": "064111222"}
         sortie -> []
     """
-         # TODO : à compléter
-    pass
-
+    anomalies = []
+    if donnees.get("nom", "").strip() == "":
+        anomalies.append("Le nom est obligatoire.")
+    if donnees.get("prenom", "").strip() == "":
+        anomalies.append("Le prénom est obligatoire.")
+    if donnees.get("village", "").strip() == "":
+        anomalies.append("Le village est obligatoire.")
+    if donnees.get("contact", "").strip() == "":
+        anomalies.append("Le contact est obligatoire.")
+    return anomalies
+    
 
 # ========================================================================
 # ZONE C — Ventes, Stock & Paiements
@@ -958,7 +970,7 @@ def authentifier_utilisateur(nom_utilisateur, mot_de_passe, utilisateurs):
         -> None
     """
          # TODO : à compléter
-    pass
+    return next(({"nom_utilisateur": u["nom_utilisateur"], "role": u["role"], "nom_complet": u["nom_complet"], "membre_id": u["membre_id"]} for u in utilisateurs if u["nom_utilisateur"] == nom_utilisateur and u["mot_de_passe"] == mot_de_passe), None)
 
 
 def verifier_acces_role(role, action):
@@ -986,4 +998,6 @@ def verifier_acces_role(role, action):
         verifier_acces_role("Livreur",    "tableau_de_bord")      -> False  (rôle inconnu)
     """
          # TODO : à compléter
-    pass
+    if not isinstance(role, str) or not isinstance(action, str):
+        return False
+    return action.strip() in ACTIONS_PAR_ROLE.get(role.strip(), [])
