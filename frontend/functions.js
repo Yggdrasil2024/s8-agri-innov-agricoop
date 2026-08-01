@@ -99,6 +99,29 @@ function validerFormulaireNouveauMembre(donnees) {
    Astuce   : Number("abc") vaut NaN ; Number("40") vaut 40. */
 function validerFormulaireLivraison(donnees) {
   // TODO : à compléter
+  function validerFormulaireLivraison(donnees) {
+  if (!donnees) return false;
+
+  const { membre_id, culture, quantite } = donnees;
+
+  // membre_id ne doit pas être vide
+  if (membre_id === undefined || membre_id === null || membre_id === "") {
+    return false;
+  }
+
+  // culture ne doit pas être vide
+  if (!culture || culture.trim() === "") {
+    return false;
+  }
+
+  // quantite doit être un nombre strictement supérieur à 0
+  const quantiteNombre = Number(quantite);
+  if (isNaN(quantiteNombre) || quantiteNombre <= 0) {
+    return false;
+  }
+
+  return true;
+}
 }
 
 
@@ -111,6 +134,11 @@ function validerFormulaireLivraison(donnees) {
                directement (ordre alphabétique = ordre chronologique). */
 function trierLivraisonsParDate(livraisons) {
   // TODO : à compléter
+  function trierLivraisonsParDate(livraisons) {
+  if (!Array.isArray(livraisons)) return [];
+
+  return [...livraisons].sort((a, b) => b.date.localeCompare(a.date));
+}
 }
 
 
