@@ -1,0 +1,21 @@
+:root {
+  /* A UTILISER : Sidebar, Header des tableaux, Boutons principaux, Icônes actives */
+
+  --primary-900: #274e32;
+  --primary-800: #2f5d3a;
+  --primary-700: #3e6b48;
+  --primary-600: #4f7a58;
+
+  /*========================*/
+
+  --secondary: #d99a2b; /* Utilisation : Élément actif dans le menu, Badge, Accent */
+  --success: #2e7d32; /*Success*/
+  --danger: #c62828; /*Erreur*/
+  --warning: #f9a825; /*Avertissement*/
+  --info: #1565c0; /*Information*/
+  --background: #f7f5ef; /*Fond*/
+  --surface: #ffffff; /*Carte*/
+  --border: #e3e3e3; /*Bordure*/
+  --text-secondary: #6b7280; /*Texte secondaire*/
+}
+
