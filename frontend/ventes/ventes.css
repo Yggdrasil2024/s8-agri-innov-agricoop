@@ -222,6 +222,46 @@ h2 {
   }
 }
 
+/*============================================
+*
+*  general: version desktop
+*
+=============================================*/
+@media screen and (min-width: 1024px) {
+  .section-container {
+    width: 750px;
+    margin-inline: auto;
+  }
+
+  main .main-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 100%;
+  }
+
+  .section-container {
+    width: 100%;
+  }
+
+  .header {
+    grid-column: span 12;
+    text-align: left;
+  }
+
+  .stocks {
+    grid-column: span 6;
+  }
+
+  .sales {
+    grid-column: span 6;
+    grid-row: span 3;
+  }
+
+  .new-sale {
+    grid-column: span 6;
+  }
+}
+
 /*====================:( stocks section ):================*/
 
 .stocks .card {
@@ -324,6 +364,16 @@ h2 {
 *
 ============================================*/
 @media screen and (min-width: 1024px) {
+  #cartes-stock {
+    display: flex;
+    width: 100%;
+    gap: var(--space-1);
+  }
+
+  .stocks .card {
+    margin: 0;
+    flex: 1;
+  }
 }
 
 /*============================================
@@ -457,4 +507,17 @@ h2 {
 *
 ============================================*/
 @media screen and (min-width: 1024px) {
+  .new-sale .section-container form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+  }
+
+  .new-sale .section-container .form-field-container {
+    grid-column: span 2;
+  }
+
+  .new-sale .section-container .form-field-container:last-child {
+    grid-column: span 4;
+  }
 }
