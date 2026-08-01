@@ -1,0 +1,523 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900\&display=swap");
+
+:root {
+  /* ===============================
+
+   PRIMARY COLORS
+
+=============================== \*/
+
+  --color-primary: #2f5d3a;
+  --color-primary-hover: #24482d;
+  --color-primary-light: #eaf4ec;
+
+  /* ===============================
+
+   BACKGROUND COLORS
+
+=============================== \*/
+
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-sidebar: #24482d;
+
+  /* ===============================
+
+   TEXT COLORS
+
+=============================== \*/
+
+  --color-heading: #1f2937;
+  --color-body: #4b5563;
+  --color-muted: #6b7280;
+
+  /* ===============================
+
+   STATUS COLORS
+
+=============================== \*/
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+  --info: #2563eb;
+
+  /* ===============================
+
+   BORDER
+
+=============================== \*/
+
+  --border-color: #e5e7eb;
+
+  /* ===============================
+
+   BORDER RADIUS
+
+=============================== \*/
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  /* ===============================
+
+   SHADOWS
+
+=============================== \*/
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.12);
+
+  /* ===============================
+
+   TRANSITION
+
+=============================== \*/
+
+  --transition: 0.3s ease;
+
+  /* ===============================
+
+    TYPOGRAPHY
+
+=============================== \*/
+  --font-family: Inter, "Segoe UI", Roboto, sans-serif;
+
+  /* ===============================
+
+    FONT SIZE
+
+=============================== \*/
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+
+  /* ===============================
+
+    SPACING
+
+=============================== */
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+}
+
+*::before,
+*::after,
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--color-body);
+  background-color: var(--color-background);
+  position: relative;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  color: var(--color-heading);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: #fff;
+  transition: var(--transition);
+}
+
+input:hover,
+select:hover {
+  background-color: var(--border-color);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+  box-shadow: 0 0 0 4px rgba(47, 93, 58, 0.4);
+}
+
+h1,
+h2 {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.main-container {
+  width: 100%;
+  margin: 1.2rem 0;
+  padding: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: var(--space-3);
+}
+
+.div-container {
+  width: 100%;
+  margin: 0 1rem;
+}
+
+.header h1 {
+  margin-bottom: 0.1rem;
+}
+
+/*============================================
+*
+*  general: version tablet
+*
+=============================================*/
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .section-container {
+    width: 750px;
+    margin-inline: auto;
+  }
+}
+
+/*============================================
+*
+*  general: version desktop
+*
+=============================================*/
+@media screen and (min-width: 1024px) {
+  .section-container {
+    width: 750px;
+    margin-inline: auto;
+  }
+
+  main .main-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 100%;
+  }
+
+  .section-container {
+    width: 100%;
+  }
+
+  .header {
+    grid-column: span 12;
+    text-align: left;
+  }
+
+  .stocks {
+    grid-column: span 6;
+  }
+
+  .sales {
+    grid-column: span 6;
+    grid-row: span 3;
+  }
+
+  .new-sale {
+    grid-column: span 6;
+  }
+}
+
+/*====================:( stocks section ):================*/
+
+.stocks .card {
+  /*layout*/
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.stocks .card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.stocks .stock-label {
+  margin-bottom: var(--space-1);
+}
+
+.stocks .card:last-child {
+  margin-bottom: 0;
+}
+
+.stocks .card h2 {
+  font-size: 20px;
+}
+
+.stocks .card p {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.stocks .badge {
+  font-size: var(--fs-sm);
+  padding: var(--space-1);
+  background-color: var(--success);
+  align-self: flex-start;
+  border-radius: var(--radius-sm);
+}
+
+.stocks .barre-stock-fond {
+  background-color: lightgrey;
+  border-radius: 18px;
+}
+
+.barre-stock-remplissage {
+  height: 12px;
+  width: 100%;
+  background-color: #16a34a;
+  border-radius: 18px;
+}
+
+.stocks .card:first-child .badge {
+  background-color: #dc262686;
+  color: var(--danger);
+}
+
+.stocks .card:first-child .barre-stock-remplissage {
+  background-color: var(--danger);
+}
+
+.stocks .card:nth-child(2) .badge {
+}
+
+.stocks .card:last-child .badge {
+  background-color: #f59f0b84;
+  color: var(--warning);
+}
+
+.stocks .card:last-child .barre-stock-remplissage {
+  background-color: var(--warning);
+}
+
+/*============================================
+*
+*   section: stocks version tablet
+*
+============================================*/
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  #cartes-stock {
+    display: flex;
+    width: 100%;
+    gap: var(--space-1);
+  }
+
+  .stocks .card {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+/*============================================
+*
+*   section: stocks version desktop
+*
+============================================*/
+@media screen and (min-width: 1024px) {
+  #cartes-stock {
+    display: flex;
+    width: 100%;
+    gap: var(--space-1);
+  }
+
+  .stocks .card {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+/*============================================
+*
+*  section des ventes
+*
+=============================================*/
+
+.sales .sales-label {
+  margin-bottom: var(--space-1);
+}
+
+.sales .table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+}
+
+.sales table {
+  background-color: var(--color-surface);
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.sales table th,
+.sales table td {
+  width: fit-content;
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.sales table tr {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sales table tr:last-child {
+  border-bottom: none;
+}
+
+.sales table tr:hover {
+  background-color: var(--border-color);
+}
+
+.sales table th {
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+/*============================================
+*
+*   section: sales version tablet
+*
+============================================*/
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+}
+
+/*============================================
+*
+*   section: sales version desktop
+*
+============================================*/
+@media screen and (min-width: 1024px) {
+}
+
+/*============================================
+*
+*   section: enregistrement vente version mobile
+*
+============================================*/
+.new-sale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.new-sale .section-container form {
+  margin-top: var(--space-4);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  background-color: var(--color-surface);
+}
+
+.new-sale form .form-field-container {
+  margin: var(--space-1) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.new-sale form input,
+.new-sale form select {
+  font-size: var(--fs-lg);
+}
+
+.new-sale form button {
+  font-size: var(--fs-md);
+  padding: var(--space-2);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.new-sale form button:hover,
+.new-sale form button:focus {
+  transform: translateY(-2px);
+  background-color: var(--color-primary-hover);
+}
+
+/*============================================
+*
+*   section: enregistrement vente version tablet
+*
+============================================*/
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .new-sale .section-container {
+    width: 750px;
+    margin-inline: auto;
+  }
+}
+
+/*============================================
+*
+*   section: enregistrement vente version desktop
+*
+============================================*/
+@media screen and (min-width: 1024px) {
+  .new-sale .section-container form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-2);
+  }
+
+  .new-sale .section-container .form-field-container {
+    grid-column: span 2;
+  }
+
+  .new-sale .section-container .form-field-container:last-child {
+    grid-column: span 4;
+  }
+}
