@@ -310,3 +310,25 @@ CONTENU PRINCIPAL */
   overflow-y: auto;
   height: calc(100vh - 60px);
 }
+
+.filtres {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.filtres input[type="text"] {
+  padding-left: 40px; /* Pour laisser de l'espace pour l'icône */
+}
+
+.filtres i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--color-muted);
+  pointer-events: none; /*Pour que l'icône ne bloque pas la saisie dans le champ de recherche*/
+}

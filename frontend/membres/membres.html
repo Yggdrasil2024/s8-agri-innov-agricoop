@@ -114,28 +114,23 @@
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
-      <select id="filtre-statut">
-        <option value="">Tous</option>
-        <option value="À jour">À jour</option>
-        <option value="En retard">En retard</option>
-      </select>
+      <section class="filtres">
+        <input
+          type="text"
+          id="champ-recherche-membre"
+          placeholder=" Rechercher un membre..."
+        />
+        <i class="ri-search-line"></i>
 
-      <input
-        type="text"
-        id="champ-recherche-membre"
-        placeholder="Rechercher un membre..."
-      />
+        <select id="filtre-statut">
+          <option value="">Tous</option>
+          <option value="À jour">À jour</option>
+          <option value="En retard">En retard</option>
+        </select>
+      </section>
 
-      <!-- =====================================================================
-         LISTE DES MEMBRES — TODO (Dev FS2)
-         Le contenu est injecté par main.js. Le dev doit structurer le
-         conteneur et styliser les éléments .membre-ligne, .badge.
-
-         *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
-         ===================================================================== -->
-      <div id="liste-membres"></div>
-
-      <!-- =====================================================================
+      <section class="content__nouveau__membre">
+        <!-- =====================================================================
          NOUVEAU MEMBRE — TODO (Dev FS2)
          Construire le formulaire de création d'un membre (module Membres,
          nouveau — section 4.1 du FRD). Les 4 champs sont obligatoires.
@@ -143,19 +138,35 @@
          la liste de référence de la coopérative), pas un champ libre.
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
-         ===================================================================== -->
-      <form id="form-nouveau-membre">
-        <input type="text" id="nm-prenom" placeholder="Prénom" />
-        <input type="text" id="nm-nom" placeholder="Nom" />
-        <select id="nm-village">
-          <option value="">-- Choisir un village --</option>
-        </select>
-        <input type="text" id="nm-contact" placeholder="Contact (téléphone)" />
-        <button type="submit">Créer le membre</button>
-      </form>
+        ===================================================================== -->
 
-      <div id="erreurs-nouveau-membre" hidden></div>
-      <div id="message-succes-nouveau-membre" hidden></div>
+        <form id="form-nouveau-membre">
+          <h2>Ajouter un nouveau membre</h2>
+          <input type="text" id="nm-prenom" placeholder="Prénom" />
+          <input type="text" id="nm-nom" placeholder="Nom" />
+          <select id="nm-village">
+            <option value="">-- Choisir un village --</option>
+          </select>
+          <input
+            type="text"
+            id="nm-contact"
+            placeholder="Contact (téléphone)"
+          />
+          <button type="submit" class="btn-primary">Créer le membre</button>
+        </form>
+
+        <div id="erreurs-nouveau-membre" hidden></div>
+        <div id="message-succes-nouveau-membre" hidden></div>
+
+        <!-- =====================================================================
+         LISTE DES MEMBRES — TODO (Dev FS2)
+         Le contenu est injecté par main.js. Le dev doit structurer le
+         conteneur et styliser les éléments .membre-ligne, .badge.
+
+         *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
+         ===================================================================== -->
+        <div id="liste-membres"></div>
+      </section>
     </main>
 
     <!-- NE PAS MODIFIER — scripts de connexion au backend -->
