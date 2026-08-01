@@ -19,15 +19,15 @@
   <body>
     <!-- NAVIGATION — TODO (Dev FS2) -->
     <header>
-      <section class="header__content">
+      <section class="header__content" role="banner">
         <div class="title">
           <h1>Membres</h1>
-          <span class="subtitle">Gestion des membres de la coopérative</span>
+          <p class="subtitle">Gestion des membres de la coopérative</p>
         </div>
 
         <div class="header__user__info">
           <div class="header__icon__user">
-            <i class="ri-user-fill"></i>
+            <i class="ri-user-fill" aria-hidden="true"></i>
           </div>
           <div class="header__content__user">
             <span class="header__name__user">Sandra Malonga</span>
@@ -37,58 +37,58 @@
       </section>
     </header>
 
-    <aside class="sidebar">
+    <aside class="sidebar" aria-label="Navigation principale">
       <div class="logo">
         <h1>AgriCoop Connect</h1>
       </div>
 
-      <nav>
-        <ul class="menu__list">
-          <input type="checkbox" id="menu-toggle" class="menu__toggle" />
-          <label for="menu-toggle" class="menu__toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-          </label>
+      <nav aria-label="Menu principal">
+        <input type="checkbox" id="menu-toggle" />
+        <label for="menu-toggle" class="menu__toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
 
+        <ul class="menu__list">
           <li>
             <a href="../dashboard/dashboard.html">
-              <i class="ri-home-9-line"></i>
+              <i class="ri-home-9-line" aria-hidden="true"></i>
               Dashboard
             </a>
           </li>
 
           <li>
             <a href="../membres/membres.html">
-              <i class="ri-group-fill"></i>
+              <i class="ri-group-fill" aria-hidden="true"></i>
               Membres
             </a>
           </li>
 
           <li>
             <a href="../livraisons/livraisons.html">
-              <i class="ri-shopping-cart-2-line"></i>
+              <i class="ri-shopping-cart-2-line" aria-hidden="true"></i>
               Livraisons
             </a>
           </li>
 
           <li>
             <a href="../paiements/paiements.html">
-              <i class="ri-wallet-3-fill"></i>
+              <i class="ri-wallet-3-fill" aria-hidden="true"></i>
               Paiements
             </a>
           </li>
 
           <li>
             <a href="../ventes/ventes.html">
-              <i class="ri-refund-2-line"></i>
+              <i class="ri-refund-2-line" aria-hidden="true"></i>
               Ventes
             </a>
           </li>
 
           <li>
             <a href="../statistiques/statistiques.html">
-              <i class="ri-line-chart-line"></i>
+              <i class="ri-line-chart-line" aria-hidden="true"></i>
               Statistiques
             </a>
           </li>
@@ -96,7 +96,7 @@
 
         <div class="user__info">
           <div class="icon__user">
-            <i class="ri-user-fill"></i>
+            <i class="ri-user-fill" aria-hidden="true"></i>
           </div>
           <div class="content__user">
             <span class="name__user">Sandra Malonga</span>
@@ -114,22 +114,26 @@
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
-      <section class="filtres">
+      <section class="filtres" aria-label="Filtres de recherche des membres">
         <input
           type="text"
           id="champ-recherche-membre"
-          placeholder=" Rechercher un membre..."
+          placeholder="Rechercher un membre..."
+          autocomplete="off"
         />
-        <i class="ri-search-line"></i>
+        <i class="ri-search-line" aria-hidden="true"></i>
 
-        <select id="filtre-statut">
+        <select id="filtre-statut" aria-label="Filtrer par statut">
           <option value="">Tous</option>
           <option value="À jour">À jour</option>
           <option value="En retard">En retard</option>
         </select>
       </section>
 
-      <section class="content__nouveau__membre">
+      <section
+        class="content__nouveau__membre"
+        aria-label="Gestion des membres"
+      >
         <!-- =====================================================================
          NOUVEAU MEMBRE — TODO (Dev FS2)
          Construire le formulaire de création d'un membre (module Membres,
@@ -140,25 +144,38 @@
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
         ===================================================================== -->
 
-        <form id="form-nouveau-membre">
-          <h2>Ajouter un nouveau membre</h2>
-          <input type="text" id="nm-prenom" placeholder="Prénom" />
-          <input type="text" id="nm-nom" placeholder="Nom" />
-          <select id="nm-village">
+        <form
+          id="form-nouveau-membre"
+          aria-labelledby="titre-formulaire-membre"
+        >
+          <h2 id="titre-formulaire-membre">Ajouter un nouveau membre</h2>
+          <label class="sr-only" for="nm-prenom">Prénom</label>
+          <input type="text" id="nm-prenom" placeholder="Prénom" required />
+          <label class="sr-only" for="nm-nom">Nom</label>
+          <input type="text" id="nm-nom" placeholder="Nom" required />
+          <label class="sr-only" for="nm-village">Village</label>
+          <select id="nm-village" required>
             <option value="">-- Choisir un village --</option>
           </select>
+          <label class="sr-only" for="nm-contact">Contact</label>
           <input
             type="text"
             id="nm-contact"
             placeholder="Contact (téléphone)"
+            required
           />
           <button type="submit" class="btn-primary">
-            <i class="ri-add-line"></i>Créer le membre
+            <i class="ri-add-line" aria-hidden="true"></i>Créer le membre
           </button>
         </form>
 
-        <div id="erreurs-nouveau-membre" hidden></div>
-        <div id="message-succes-nouveau-membre" hidden></div>
+        <div id="erreurs-nouveau-membre" role="alert" hidden></div>
+        <div
+          id="message-succes-nouveau-membre"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
 
         <!-- =====================================================================
          LISTE DES MEMBRES — TODO (Dev FS2)
@@ -167,16 +184,20 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-        <section class="table-section">
-          <h2>Liste des membres</h2>
-          <div class="table-header" aria-hidden="true">
+        <section class="table-section" aria-labelledby="titre-liste-membres">
+          <h2 id="titre-liste-membres">Liste des membres</h2>
+          <div class="table-header">
             <span>Nom</span>
             <span>Village</span>
             <span>Contact</span>
             <span>Statut</span>
             <span>Solde</span>
           </div>
-          <div id="liste-membres"></div>
+          <div
+            id="liste-membres"
+            role="table"
+            aria-label="Liste des membres"
+          ></div>
           <div class="pagination">
             <button class="page-btn" type="button">Précédent</button>
             <span class="page-info">Page 1</span>
