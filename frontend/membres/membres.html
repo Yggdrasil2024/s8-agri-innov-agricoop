@@ -17,9 +17,20 @@
   </head>
 
   <body>
+    <div class="overlay" aria-hidden="true"></div>
+
     <!-- NAVIGATION — TODO (Dev FS2) -->
     <header>
       <section class="header__content" role="banner">
+        <button
+          class="mobile-toggle"
+          type="button"
+          aria-label="Ouvrir le menu"
+          aria-controls="sidebar-menu"
+        >
+          <i class="ri-menu-fill"></i>
+        </button>
+
         <div class="title">
           <h1>Membres</h1>
           <p class="subtitle">Gestion des membres de la coopérative</p>
@@ -37,7 +48,7 @@
       </section>
     </header>
 
-    <aside class="sidebar" aria-label="Navigation principale">
+    <aside id="sidebar-menu" class="sidebar" aria-label="Navigation principale">
       <div class="logo">
         <h1>AgriCoop Connect</h1>
       </div>
