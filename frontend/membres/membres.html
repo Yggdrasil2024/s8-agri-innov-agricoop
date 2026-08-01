@@ -152,7 +152,9 @@
             id="nm-contact"
             placeholder="Contact (téléphone)"
           />
-          <button type="submit" class="btn-primary">Créer le membre</button>
+          <button type="submit" class="btn-primary">
+            <i class="ri-add-line"></i>Créer le membre
+          </button>
         </form>
 
         <div id="erreurs-nouveau-membre" hidden></div>
@@ -165,7 +167,22 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-        <div id="liste-membres"></div>
+        <section class="table-section">
+          <h2>Liste des membres</h2>
+          <div class="table-header" aria-hidden="true">
+            <span>Nom</span>
+            <span>Village</span>
+            <span>Contact</span>
+            <span>Statut</span>
+            <span>Solde</span>
+          </div>
+          <div id="liste-membres"></div>
+          <div class="pagination">
+            <button class="page-btn" type="button">Précédent</button>
+            <span class="page-info">Page 1</span>
+            <button class="page-btn" type="button">Suivant</button>
+          </div>
+        </section>
       </section>
     </main>
 
