@@ -13,7 +13,16 @@
   <!-- NAVIGATION — TODO (Dev FS5) -->
 
   <main>
-    <!-- =====================================================================
+    <div class="main-container">
+      <section class="header">
+        <div class="section-container">
+          <h1>Ventes</h1>
+          <p>enregistrer et visualiser l'etat des ventes et des stocks.</p>
+        </div>
+      </section>
+
+      <section class="stocks">
+        <!-- =====================================================================
          CARTES STOCK — TODO (Dev FS5)
          Le contenu est injecté par main.js (une carte par culture avec
          badge et barre de remplissage). Le dev stylise .card, .badge,
@@ -21,23 +30,71 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <div id="cartes-stock"></div>
+        <div class="section-container">
+          <h2 class="stock-label">Etat des stocks</h2>
+          <div id="cartes-stock"></div>
+        </div>
 
-    <!-- =====================================================================
+      </section>
+
+      <section class="sales">
+        <div class="section-container">
+          <h2 class="sales-label">Historiques de ventes</h2>
+          <!-- =====================================================================
          TABLEAU DES VENTES — TODO (Dev FS5)
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <table>
-      <thead>
-        <!-- TODO (Dev FS5) : en-têtes (Acheteur, Culture, Quantité, Prix/kg) -->
-        <th>Acheteur</th>
-        <th>Culture</th>
-        <th>Quantité</th>
-        <th>Prix/kg</th>
-      </thead>
-      <tbody id="liste-ventes"></tbody>
-    </table>
+          <table>
+            <!-- TODO (Dev FS5) : en-têtes (Acheteur, Culture, Quantité, Prix/kg) -->
+            <thead>
+              <tr>
+                <th>Acheteur</th>
+                <th>Culture</th>
+                <th>Quantité</th>
+                <th>Prix/kg</th>
+              </tr>
+            </thead>
+            <tbody id="liste-ventes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="nouvelle-vente">
+        <div class="section-container">
+          <h2>Enregistrer une vente</h2>
+          <form action="#">
+            <div class="form-field-container">
+              <label for="client">Acheteur</label>
+              <input placeholder="Ex: Christine" id="client" type="text">
+            </div>
+
+            <div class="form-field-container">
+              <label for="culture">culture</label>
+              <select class="crops-selector" name="culture" id="culture">
+                <option value="Arachide">Arachide</option>
+                <option value="Manioc">Manioc</option>
+                <option value="Maïs">Maïs</option>
+              </select>
+            </div>
+
+            <div class="form-field-container">
+              <label for="quantité">Quantité (kg)</label>
+              <input placeholder="Ex: 450" id="quantité" type="number">
+            </div>
+
+            <div class="form-field-container">
+              <label for="prix_negocier">Prix négocier (FCFA/kg)</label>
+              <input placeholder="Ex: 350" id="prix_negocier" type="number">
+            </div>
+
+            <div class="form-field-container">
+              <button type="submit">Enregistrer la vente</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
   </main>
 
   <!-- NE PAS MODIFIER — scripts de connexion au backend -->
