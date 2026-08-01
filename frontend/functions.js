@@ -157,6 +157,7 @@ function getBadgeStock(quantiteDisponible) {
    Exemple   : formaterMontant(23000) -> "23000 FCFA" */
 function formaterMontant(montant) {
   // TODO : à compléter
+  return `${montant} FCFA`;
 }
 
 /* [Dev FS6 — Statistiques — niveau S8 : tableau .sort]
