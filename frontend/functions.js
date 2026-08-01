@@ -126,8 +126,31 @@ function trierLivraisonsParDate(livraisons) {
      - mode_paiement doit être "Espèces" ou "Mobile Money"
    Retourne : true si tout est valide, false sinon. */
 function validerFormulairePaiement(donnees) {
-  // TODO : à compléter
+  const { membre, montant, mode, soldeDu } = donnees;
+ 
+  if (!membre) {
+    return { valide: false, message: 'Veuillez choisir un membre.' };
+  }
+ 
+  if (isNaN(montant) || montant === null || montant === undefined || montant <= 0) {
+    return { valide: false, message: 'Montant vide.' };
+  }
+ 
+  if (!mode) {
+    return { valide: false, message: 'Veuillez choisir un mode de paiement.' };
+  }
+ 
+  // EX-17 : blocage strict du surpaiement (Paiement <= Solde Dû)
+  if (soldeDu !== null && soldeDu !== undefined && montant > soldeDu) {
+    return {
+      valide: false,
+      message: `Le montant dépasse le solde dû (${soldeDu.toLocaleString('fr-FR')} FCFA).`
+    };
+  }
+ 
+  return { valide: true, message: '' };
 }
+ 
 
 
 /* [Dev FS4 — Paiements — niveau S7/S8 : boucle + accumulateur]
@@ -137,7 +160,11 @@ function validerFormulairePaiement(donnees) {
    Retourne  : un nombre (la somme de tous les montants).
    Exemple   : calculerTotalPaiements([{montant:5000},{montant:3000}]) -> 8000 */
 function calculerTotalPaiements(paiements) {
-  // TODO : à compléter
+ let total = 0;
+  for (let i = 0; i < paiements.length; i++) {
+    total += paiements[i].montant;
+  }
+  return total;
 }
 
 
