@@ -99,7 +99,6 @@ def calculer_indicateurs_globaux(livraisons, ventes, paiements):
             "nb_livraisons_mois": 2
         }
     """
-         # TODO : à compléter
     # Quantité totale livrée
     total_livraisons = 0
     for livraison in livraisons:
@@ -163,7 +162,6 @@ def calculer_livraisons_par_jour_semaine(livraisons):
         entrée -> [{"date": "2026-07-08", "quantite": 40}, {"date": "2026-07-08", "quantite": 10}]
         sortie -> {"2026-07-08": 50}
     """
-         # TODO : à compléter
     volumes_par_date = {}
 
     for livraison in livraisons:
@@ -213,7 +211,6 @@ def classer_membres_par_production(livraisons):
             {"membre_id": 2, "volume_total": 50},
         ]
     """
-         # TODO : à compléter
     volumes_membres = {}
 
     # Calculer le volume total livré par chaque membre
@@ -277,7 +274,6 @@ def calculer_statistiques_globales(livraisons, ventes):
 
         sortie -> {"Manioc": {"volume_total": 100, "valeur_totale": 11000}}
     """
-         # TODO : à compléter
     rendement = {}
 
     # Calcul du volume total livré par culture
@@ -352,7 +348,6 @@ def generer_indicateurs_rapport_bailleur(livraisons, ventes, paiements):
         sortie -> {"volume_total_periode": 150, "montant_ventes_periode": 17600,
                    "taux_regularite_paiements": 50, "nb_membres_actifs": 2}
     """
-         # TODO : à compléter
     # Calcul du volume total livré pendant la période
     volume_total_periode = 0
 
@@ -394,7 +389,6 @@ def generer_indicateurs_rapport_bailleur(livraisons, ventes, paiements):
         "taux_regularite_paiements": taux_regularite_paiements,
         "nb_membres_actifs": nb_membres_actifs
     }
-    pass
 
 
 def identifier_top_acheteur(ventes, acheteurs):
@@ -750,13 +744,15 @@ def calculer_stock_disponible(livraisons, ventes):
     for livraison in livraisons:
         culture = livraison["culture"]
         quantite = livraison["quantite"]
-        stock[culture] += quantite
+        if culture in stock:
+           stock[culture] += quantite
 
     # Retirer les quantités vendues
     for vente in ventes:
         culture = vente["culture"]
         quantite = vente["quantite"]
-        stock[culture] -= quantite
+        if culture in stock:
+            stock[culture] -= quantite
 
     return stock
 
