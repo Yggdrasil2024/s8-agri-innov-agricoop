@@ -9,6 +9,30 @@
 <body>
 
   <!-- NAVIGATION — TODO (Dev FS6) -->
+   <!-- Bouton burger (mobile) -->
+  <button class="burger" id="burger-btn" aria-label="Menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+   
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-text">🌿 AgriCoop COMAKI</span>
+    </div>
+    <nav class="sidebar-nav" id="main-nav">
+      <ul class="nav-list">
+        <li><a href="../dashboard/dashboard.html" class="nav-link ">Tableau de bord</a></li>
+        <li><a href="../membres/membres.html" class="nav-link">Membres</a></li>
+        <li><a href="../livraisons/livraisons.html" class="nav-link">Livraisons</a></li>
+        <li><a href="../paiements/paiements.html" class="nav-link">Paiements</a></li>
+        <li><a href="../ventes/ventes.html" class="nav-link">Ventes</a></li>
+        <li><a href="../statistiques/statistiques.html" class="nav-link active">Statistiques</a></li>
+        <li><a href="../comptes/comptes.html" class="nav-link">Comptes</a></li>
+        <li><a href="../login/login.html" class="nav-link">Connexion</a></li>
+      </ul>
+    </nav>
+  </aside>
 
   <main>
     <!-- =====================================================================
@@ -17,26 +41,49 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <ol id="classement-membres"></ol>
-
+    
+    <h1 class="page-title">Statistiques</h1>
+    <section class="card card-classement">
+      <h2>Classement des membres</h2>
+      <p class="card-subtitle">Classés par volume total livré (du plus productif au moins productif)</p>
+      <ol id="classement-membres" class="classement-list"></ol>
+    </section>
+    
     <!-- =====================================================================
          TABLEAU PAR CULTURE — TODO (Dev FS6)
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <table>
-      <thead>
-        <!-- TODO (Dev FS6) : en-têtes (Culture, Volume total, Valeur totale) -->
-      </thead>
-      <tbody id="tableau-cultures"></tbody>
-    </table>
+    
+    
+     <section class="card card-cultures">
+      <h2>Répartition par culture</h2>
+      <p class="card-subtitle">Volumes et valeurs cumulés par type de culture</p>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Culture</th>
+              <th>Volume total</th>
+              <th>Valeur totale</th>
+            </tr>
+          </thead>
+          <tbody id="tableau-cultures"></tbody>
+        </table>
+      </div>
+    </section>
 
     <!-- =====================================================================
          TOP ACHETEUR — TODO (Dev FS6)
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <div id="top-acheteur"></div>
+    
+    <section class="card card-top-acheteur">
+      <h2>Top acheteur</h2>
+      <p class="card-subtitle">Acheteur ayant le plus grand volume d’achats</p>
+      <div id="top-acheteur" class="top-acheteur-content"></div>
+    </section>
 
     <!-- =====================================================================
          RAPPORT BAILLEUR — TODO (Dev FS6 + DM)
@@ -45,16 +92,51 @@
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
-    <section id="rapport-bailleur-contenu">
-      <span id="rb-volume"></span>
-      <span id="rb-montant"></span>
-      <span id="rb-taux"></span>
-      <span id="rb-membres"></span>
+    <section class="card card-rapport" id="rapport-bailleur">
+      <h2>Rapport bailleur</h2>
+      <p class="card-subtitle">Synthèse destinée au bailleur / partenaire</p>
+      <div id="rapport-bailleur-contenu" class="rapport-grid">
+        <div class="rapport-item">
+          <span class="rapport-label">Volume total livré</span>
+          <span id="rb-volume" class="rapport-value"></span>
+        </div>
+        <div class="rapport-item">
+          <span class="rapport-label">Montant total</span>
+          <span id="rb-montant" class="rapport-value"></span>
+        </div>
+        <div class="rapport-item">
+          <span class="rapport-label">Taux de participation</span>
+          <span id="rb-taux" class="rapport-value"></span>
+        </div>
+        <div class="rapport-item">
+          <span class="rapport-label">Membres actifs</span>
+          <span id="rb-membres" class="rapport-value"></span>
+        </div>
+      </div>
     </section>
   </main>
 
   <!-- NE PAS MODIFIER — scripts de connexion au backend -->
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
+    <!-- Script sidebar / burger (UI uniquement) -->
+  <script>
+    const burger = document.getElementById('burger-btn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function toggleSidebar() {
+      const open = sidebar.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+      if (overlay) overlay.classList.toggle('visible', open);
+    }
+
+    if (burger && sidebar) {
+      burger.addEventListener('click', toggleSidebar);
+    }
+    if (overlay) {
+      overlay.addEventListener('click', toggleSidebar);
+    }
+  </script>
 </body>
 </html>
