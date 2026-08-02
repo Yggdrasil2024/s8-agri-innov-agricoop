@@ -714,32 +714,8 @@ async function initNouveauMembre() {
   });
 }
 
-// Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
-function initNavigationActive() {
-  const liens = document.querySelectorAll(".sidebar .menu__list a");
-  const pageCourante = window.location.pathname;
-
-  liens.forEach((lien) => {
-    const href = lien.getAttribute("href");
-    if (!href) {
-      return;
-    }
-
-    const cible = new URL(href, window.location.href);
-    const estActive = cible.pathname === pageCourante;
-
-    lien.classList.toggle("active", estActive);
-    if (estActive) {
-      lien.setAttribute("aria-current", "page");
-    } else {
-      lien.removeAttribute("aria-current");
-    }
-  });
-}
-
 /* ---------- Démarrage automatique ------------------------------------ */
 window.addEventListener("DOMContentLoaded", () => {
-  initNavigationActive(); //active le lien du menu correspondant à la page ouverte
   initBarreSession();
   initLogin();
   initDashboard();
