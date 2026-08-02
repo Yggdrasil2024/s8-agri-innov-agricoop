@@ -123,6 +123,92 @@ function validerFormulaireNouveauMembre(donnees) {
   };
 }
 
+function initFormulaireNouveauMembre() {
+  const form = document.getElementById("form-nouveau-membre");
+  if (!form || form.dataset.gereParFunctions === "true") {
+    return;
+  }
+
+  form.dataset.gereParFunctions = "true";
+
+  form.addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
+
+    const donnees = {
+      prenom: document.getElementById("nm-prenom").value,
+      nom: document.getElementById("nm-nom").value,
+      village: document.getElementById("nm-village").value,
+      contact: document.getElementById("nm-contact").value,
+    };
+
+    const erreursCible = document.getElementById("erreurs-nouveau-membre");
+    const succesCible = document.getElementById("message-succes-nouveau-membre");
+
+    const validation = validerFormulaireNouveauMembre(donnees);
+    if (!validation.valide) {
+      if (erreursCible) {
+        erreursCible.innerHTML =
+          "<ul>" +
+          validation.erreurs.map((erreur) => `<li>${erreur}</li>`).join("") +
+          "</ul>";
+        erreursCible.hidden = false;
+      }
+      if (succesCible) {
+        succesCible.hidden = true;
+      }
+      return;
+    }
+
+    if (erreursCible) {
+      erreursCible.hidden = true;
+      erreursCible.innerHTML = "";
+    }
+
+    try {
+      const reponse = await fetch(`${window.API_URL || "http://localhost:5000/api"}/membres`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(donnees),
+      });
+      const resultat = await reponse.json();
+
+      if (resultat.succes) {
+        if (succesCible) {
+          succesCible.textContent = `Membre créé : ${resultat.membre.nom}.`;
+          succesCible.hidden = false;
+        }
+        form.reset();
+
+        if (typeof window.initMembres === "function") {
+          await window.initMembres();
+        }
+      } else {
+        if (erreursCible) {
+          erreursCible.innerHTML =
+            "<ul>" +
+            (resultat.anomalies || ["Erreur inconnue."]).map((anomalie) => `<li>${anomalie}</li>`).join("") +
+            "</ul>";
+          erreursCible.hidden = false;
+        }
+        if (succesCible) {
+          succesCible.hidden = true;
+        }
+      }
+    } catch (e) {
+      if (erreursCible) {
+        erreursCible.textContent = "Impossible de contacter le serveur.";
+        erreursCible.hidden = false;
+      }
+      console.error(e);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initFormulaireNouveauMembre();
+});
+
 // Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
 function initNavigationActive() {
   const liens = document.querySelectorAll(".sidebar .menu__list a");
