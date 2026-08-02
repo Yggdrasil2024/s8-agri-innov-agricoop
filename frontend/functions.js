@@ -32,6 +32,8 @@
    Astuce   : "  ".trim() donne une chaîne vide "". */
 function validerFormulaireLogin(donnees) {
   // TODO : à compléter
+  if (donnees.nom_utilisateur.trim() && donnees.mot_de_passe) return true;
+  return false;
 }
 
 /* [Dev FS1 — Tableau de bord — niveau S7 : boucle + condition]

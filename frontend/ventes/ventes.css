@@ -547,9 +547,6 @@ h2 {
   background-color: var(--danger);
 }
 
-.stocks .card:nth-child(2) .badge {
-}
-
 .stocks .card:last-child .badge {
   background-color: #f59f0b84;
   color: var(--warning);
