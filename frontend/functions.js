@@ -52,7 +52,11 @@ function compterJoursActifs(livraisonsParJour, seuil) {
    Retourne   : un nouveau tableau ne contenant que les membres dont
                 .statut_cotisation est égal au statut demandé. */
 function filtrerMembresParStatut(membres, statut) {
-  // TODO : à compléter
+  if (!Array.isArray(membres)) {
+    return [];
+  }
+
+  return membres.filter((membre) => membre.statut_cotisation === statut);
 }
 
 /* [Dev FS2 — Membres — niveau S8 : tableau .filter + méthode de chaîne]
@@ -63,7 +67,20 @@ function filtrerMembresParStatut(membres, statut) {
                 tous les membres tels quels.
    Astuce     : "Jean Mabiala".toLowerCase().includes("jean") -> true */
 function rechercherMembreParNom(membres, texte) {
-  // TODO : à compléter
+  if (!Array.isArray(membres)) {
+    return [];
+  }
+
+  const texteRecherche = (texte || "").toLowerCase().trim();
+
+  if (texteRecherche === "") {
+    return membres;
+  }
+
+  return membres.filter((membre) => {
+    const nom = (membre.nom || "").toLowerCase();
+    return nom.includes(texteRecherche);
+  });
 }
 
 /* [Dev FS2 — Membres — niveau S7 : conditions simples — NOUVEAU]
@@ -78,7 +95,26 @@ function rechercherMembreParNom(membres, texte) {
               -> {valide: false, erreurs: ["Le prénom est obligatoire.",
                                             "Le contact est obligatoire."]} */
 function validerFormulaireNouveauMembre(donnees) {
-  // TODO : à compléter
+  const erreurs = [];
+
+  const champs = [
+    { cle: "nom", libelle: "Le nom est obligatoire." },
+    { cle: "prenom", libelle: "Le prénom est obligatoire." },
+    { cle: "village", libelle: "Le village est obligatoire." },
+    { cle: "contact", libelle: "Le contact est obligatoire." },
+  ];
+
+  champs.forEach((champ) => {
+    const valeur = donnees && donnees[champ.cle];
+    if (typeof valeur !== "string" || valeur.trim() === "") {
+      erreurs.push(champ.libelle);
+    }
+  });
+
+  return {
+    valide: erreurs.length === 0,
+    erreurs,
+  };
 }
 
 // Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
