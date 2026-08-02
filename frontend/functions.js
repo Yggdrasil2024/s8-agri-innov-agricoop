@@ -81,6 +81,34 @@ function validerFormulaireNouveauMembre(donnees) {
   // TODO : à compléter
 }
 
+// Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
+function initNavigationActive() {
+  const liens = document.querySelectorAll(".sidebar .menu__list a");
+  const pageCourante = window.location.pathname;
+
+  liens.forEach((lien) => {
+    const href = lien.getAttribute("href");
+    if (!href) {
+      return;
+    }
+
+    const estDefiniDansLeHtml = lien.classList.contains("active") || lien.hasAttribute("aria-current");
+    const cible = new URL(href, window.location.href);
+    const estActive = estDefiniDansLeHtml
+      ? lien.classList.contains("active") || cible.pathname === pageCourante
+      : cible.pathname === pageCourante;
+
+    lien.classList.toggle("active", estActive);
+    if (estActive) {
+      lien.setAttribute("aria-current", "page");
+    } else {
+      lien.removeAttribute("aria-current");
+    }
+  });
+}
+
+initNavigationActive();
+
 function initResponsiveSidebar() {
   const burger = document.querySelector(".mobile-toggle");
   const sidebar = document.querySelector(".sidebar");
@@ -235,5 +263,6 @@ if (typeof module !== "undefined") {
     getBadgeStock,
     trierClassementParVolume,
     formaterMontant,
+    initNavigationActive,
   };
 }
