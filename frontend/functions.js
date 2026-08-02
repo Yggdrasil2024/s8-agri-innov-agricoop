@@ -95,7 +95,32 @@ function rechercherMembreParNom(membres, texte) {
               -> {valide: false, erreurs: ["Le prénom est obligatoire.",
                                             "Le contact est obligatoire."]} */
 function validerFormulaireNouveauMembre(donnees) {
-  // TODO : à compléter
+  const erreurs = [];
+
+  if (!donnees) {
+    return { valide: false, erreurs: ["Tous les champs sont obligatoires."] };
+  }
+
+  if (typeof donnees.nom !== "string" || donnees.nom.trim() === "") {
+    erreurs.push("Le nom est obligatoire.");
+  }
+
+  if (typeof donnees.prenom !== "string" || donnees.prenom.trim() === "") {
+    erreurs.push("Le prénom est obligatoire.");
+  }
+
+  if (typeof donnees.village !== "string" || donnees.village.trim() === "") {
+    erreurs.push("Le village est obligatoire.");
+  }
+
+  if (typeof donnees.contact !== "string" || donnees.contact.trim() === "") {
+    erreurs.push("Le contact est obligatoire.");
+  }
+
+  return {
+    valide: erreurs.length === 0,
+    erreurs,
+  };
 }
 
 // Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
