@@ -3,66 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgriCoop Connect — Gestion des comptes</title>
+  <title>AgriCoop Connect — Comptes</title>
   <link rel="stylesheet" href="comptes.css">
 </head>
 <body>
 
-  <!-- NAVIGATION — TODO (Dev FS2) -->
+  <div class="layout">
+    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle-input">
 
-  <main>
-    <!-- =====================================================================
-         RÉSERVÉ À LA SECRÉTAIRE — TODO (Dev FS2)
-         Cette page ne devrait être utile qu'à la Secrétaire (rôle Admin).
-         Afficher un avertissement si l'utilisateur connecté n'a pas ce
-         rôle (voir main.js : la variable de session est lue depuis le
-         stockage local du navigateur, clé "agricoop_utilisateur").
+    <aside class="sidebar">
+      <div class="sidebar-brand">AgriCoop COMAKI</div>
+      <nav class="sidebar-nav">
+        <a href="../dashboard/dashboard.html">Dashboard</a>
+        <a href="../membres/membres.html">Membres</a>
+        <a href="../livraisons/livraisons.html">Livraisons</a>
+        <a href="../paiements/paiements.html">Paiements</a>
+        <a href="../ventes/ventes.html">Ventes</a>
+        <a href="../statistiques/statistiques.html">Statistiques</a>
+        <a href="../comptes/comptes.html" class="active">Comptes</a>
+      </nav>
+    </aside>
 
-         *** NE PAS MODIFIER l'id ci-dessous ***
-         ===================================================================== -->
-    <div id="acces-refuse-comptes" hidden></div>
+    <div class="content-area">
+      <header class="topbar">
+        <label for="sidebar-toggle" class="sidebar-toggle-label"></label>
+        <div>
+          <h1>Comptes</h1>
+          <p class="sous-titre">Réservé à la Secrétaire — gestion des comptes utilisateurs</p>
+        </div>
+      </header>
 
-    <!-- =====================================================================
-         FORMULAIRE NOUVEAU COMPTE — TODO (Dev FS2)
-         Construire le formulaire de création de compte (nom d'utilisateur,
-         mot de passe, rôle, nom complet). Le rôle est un menu déroulant à
-         choix fermé (Président / Trésorière / Responsable dépôt / Membre —
-         la Secrétaire ne recrée pas d'autre Secrétaire depuis cet écran).
+      <main>
+        <!-- *** NE PAS MODIFIER l'id ci-dessous *** -->
+        <div id="acces-refuse-comptes" hidden></div>
 
-         *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
-         ===================================================================== -->
-    <form id="form-nouveau-compte">
-      <input type="text" id="c-nom-utilisateur" placeholder="Nom d'utilisateur">
-      <input type="password" id="c-mot-de-passe" placeholder="Mot de passe temporaire">
-      <input type="text" id="c-nom-complet" placeholder="Nom complet">
-      <select id="c-role">
-        <option value="">-- Choisir un rôle --</option>
-        <option value="Président">Président</option>
-        <option value="Trésorière">Trésorière</option>
-        <option value="Responsable dépôt">Responsable dépôt</option>
-        <option value="Membre">Membre</option>
-      </select>
-      <button type="submit">Créer le compte</button>
-    </form>
+        <!-- *** NE PAS MODIFIER les id ci-dessous – main.js les utilise *** -->
+        <form id="form-nouveau-compte">
+          <input type="text" id="c-nom-utilisateur" placeholder="Nom d'utilisateur">
+          <input type="password" id="c-mot-de-passe" placeholder="Mot de passe temporaire">
+          <input type="text" id="c-nom-complet" placeholder="Nom complet">
+          <select id="c-role">
+            <option value="">-- Choisir un rôle --</option>
+            <option value="Président">Président</option>
+            <option value="Trésorière">Trésorière</option>
+            <option value="Responsable dépôt">Responsable dépôt</option>
+            <option value="Membre">Membre</option>
+          </select>
+          <button type="submit">Créer le compte</button>
+        </form>
 
-    <div id="message-erreur-compte" hidden></div>
-    <div id="message-succes-compte" hidden></div>
+        <div id="message-erreur-compte" class="message message-erreur" hidden></div>
+        <div id="message-succes-compte" class="message message-succes" hidden></div>
 
-    <!-- =====================================================================
-         LISTE DES COMPTES EXISTANTS — TODO (Dev FS2)
-         Construire un tableau. Le contenu des <tr> est injecté par main.js.
+        <table>
+          <thead>
+            <tr>
+              <th>Nom d'utilisateur</th>
+              <th>Nom complet</th>
+              <th>Rôle</th>
+            </tr>
+          </thead>
+          <tbody id="liste-comptes"></tbody>
+        </table>
+        <!-- *** fin de la zone protégée *** -->
+      </main>
+    </div>
+  </div>
 
-         *** NE PAS MODIFIER l'id ci-dessous ***
-         ===================================================================== -->
-    <table>
-      <thead>
-        <!-- TODO (Dev FS2) : en-têtes (Nom d'utilisateur, Nom complet, Rôle) -->
-      </thead>
-      <tbody id="liste-comptes"></tbody>
-    </table>
-  </main>
-
-  <!-- NE PAS MODIFIER — scripts de connexion au backend -->
+  <!-- NE PAS MODIFIER – scripts de connexion au backend -->
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
 </body>
