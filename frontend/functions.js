@@ -85,6 +85,7 @@ function initResponsiveSidebar() {
   const burger = document.querySelector(".mobile-toggle");
   const sidebar = document.querySelector(".sidebar");
   const overlay = document.querySelector(".overlay");
+  const closeButton = document.querySelector(".sidebar-close");
 
   if (!burger || !sidebar || !overlay) return;
 
@@ -107,6 +108,10 @@ function initResponsiveSidebar() {
       ouvrirMenu();
     }
   });
+
+  if (closeButton) {
+    closeButton.addEventListener("click", fermerMenu);
+  }
 
   overlay.addEventListener("click", fermerMenu);
 
