@@ -42,7 +42,12 @@ function validerFormulaireLogin(donnees) {
    Exemple    : compterJoursActifs({"2026-07-08": 135, "2026-07-09": 60}, 100) -> 1
    Astuce     : Object.values(livraisonsParJour) donne un tableau des quantités. */
 function compterJoursActifs(livraisonsParJour, seuil) {
-  // TODO : à compléter
+  let compte = 0;
+  for (const quantite of Object.values(livraisonsParJour)) {
+    if (quantite > seuil) {
+      compte++;
+    }
+  }
 }
 
 /* [Dev FS2 — Membres — niveau S8 : tableau .filter]
@@ -355,6 +360,8 @@ function getBadgeStock(quantiteDisponible) {
    Exemple   : formaterMontant(23000) -> "23000 FCFA" */
 function formaterMontant(montant) {
   // TODO : à compléter
+
+  return `${montant} FCFA`;
 }
 
 /* [Dev FS6 — Statistiques — niveau S8 : tableau .sort]
@@ -363,7 +370,7 @@ function formaterMontant(montant) {
    Paramètre : classement (tableau d'objets), chaque élément a .volume_total (nombre)
    Retourne  : le tableau trié par .volume_total décroissant. */
 function trierClassementParVolume(classement) {
-  // TODO : à compléter
+  return classement.sort((a, b) => b.volume_total - a.volume_total);
 }
 
 /* [Dev FS6 — fonction transverse — niveau S8 : propriétés d'objet + formatage]
@@ -373,7 +380,8 @@ function trierClassementParVolume(classement) {
    Retourne  : une chaîne au format "12/07/2026".
    Astuce    : dateStr.split("-") donne ["2026", "07", "12"]. */
 function formaterDate(dateStr) {
-  // TODO : à compléter
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 /* NE PAS MODIFIER — rend vos fonctions accessibles à main.js et aux tests */

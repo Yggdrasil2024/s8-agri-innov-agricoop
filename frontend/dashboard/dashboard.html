@@ -14,6 +14,36 @@
        Structure attendue : <nav> avec liens vers les autres modules.
        Doit inclure un menu burger pour mobile.
        ===================================================================== -->
+  <!-- Bouton burger (mobile) -->
+  <button class="burger" id="burger-btn" aria-label="Menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Overlay sombre (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+   <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-text">🌿 AgriCoop COMAKI</span>
+    </div>
+    <nav class="sidebar-nav" id="main-nav">
+      <ul class="nav-list">
+        <li><a href="../dashboard/dashboard.html" class="nav-link active">Tableau de bord</a></li>
+        <li><a href="../membres/membres.html" class="nav-link">Membres</a></li>
+        <li><a href="../livraisons/livraisons.html" class="nav-link">Livraisons</a></li>
+        <li><a href="../paiements/paiements.html" class="nav-link">Paiements</a></li>
+        <li><a href="../ventes/ventes.html" class="nav-link">Ventes</a></li>
+        <li><a href="../statistiques/statistiques.html" class="nav-link">Statistiques</a></li>
+        <li><a href="../comptes/comptes.html" class="nav-link">Comptes</a></li>
+        <li><a href="../login/login.html" class="nav-link">Connexion</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+
+
 
   <main>
     <!-- =====================================================================
@@ -25,11 +55,27 @@
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
+   
+    <h2>Indicateurs clés</h2>
     <div id="dashboard-cartes">
-      <div id="carte-stock"></div>
-      <div id="carte-montant-du"></div>
-      <div id="carte-membres"></div>
-      <div id="carte-livraisons"></div>
+      <div class="carte">
+        <span class="carte-titre">Stock total</span>
+        <div id="carte-stock"></div>
+      </div>
+      <div class="carte">
+        <span class="carte-titre">Montant dû</span>
+        <div id="carte-montant-du"></div>
+      </div>
+      
+     <div class="carte">
+        <span class="carte-titre">Membres actifs</span>
+         <div id="carte-membres"></div>
+      </div>
+
+      <div class="carte">
+        <span class="carte-titre">Livraisons du mois</span>
+        <div id="carte-livraisons"></div>
+      </div>
     </div>
 
     <!-- =====================================================================
@@ -38,7 +84,10 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <div id="jours-actifs"></div>
+    <div>
+      <h2>Jours à forte activité</h2>
+      <div id="jours-actifs"></div>
+    </div>
 
     <!-- =====================================================================
          GRAPHIQUE SEMAINE — TODO (Dev FS1)
@@ -47,11 +96,33 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <div id="graphique-semaine"></div>
+    <div id="graphiques">
+      <h2>Graphe de livraisons de la semaine</h2>
+        <div id="graphique-semaine">
+    </div>
   </main>
 
   <!-- NE PAS MODIFIER — scripts de connexion au backend -->
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
+    <!-- Script sidebar / burger (UI uniquement) -->
+  <script>
+    const burger = document.getElementById('burger-btn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function toggleSidebar() {
+      const open = sidebar.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+      if (overlay) overlay.classList.toggle('visible', open);
+    }
+
+    if (burger && sidebar) {
+      burger.addEventListener('click', toggleSidebar);
+    }
+    if (overlay) {
+      overlay.addEventListener('click', toggleSidebar);
+    }
+  </script>
 </body>
 </html>
