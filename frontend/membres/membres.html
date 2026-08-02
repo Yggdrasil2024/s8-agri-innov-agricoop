@@ -183,18 +183,19 @@
             placeholder="Contact (téléphone)"
             required
           />
+          <div class="form-messages">
+            <div id="erreurs-nouveau-membre" role="alert" hidden></div>
+            <div
+              id="message-succes-nouveau-membre"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></div>
+          </div>
           <button type="submit" class="btn-primary">
             <i class="ri-add-line" aria-hidden="true"></i>Créer le membre
           </button>
         </form>
-
-        <div id="erreurs-nouveau-membre" role="alert" hidden></div>
-        <div
-          id="message-succes-nouveau-membre"
-          role="status"
-          aria-live="polite"
-          hidden
-        ></div>
 
         <!-- =====================================================================
          LISTE DES MEMBRES — TODO (Dev FS2)
