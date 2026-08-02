@@ -623,6 +623,7 @@ MEDIA QUERIES */
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
+    margin-bottom: 1rem;
   }
 
   .filtres i {
@@ -630,8 +631,41 @@ MEDIA QUERIES */
   }
 
   .content__nouveau__membre {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  form {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .table-section {
+    width: 100%;
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  #liste-membres {
+    border-radius: var(--radius-lg);
+  }
+
+  .membre-ligne {
     grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 }
 
