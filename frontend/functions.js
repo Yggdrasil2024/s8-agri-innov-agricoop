@@ -70,7 +70,6 @@ function rechercherMembreParNom(membres, texte) {
   // TODO : à compléter
 }
 
-
 /* [Dev FS2 — Membres — niveau S7 : conditions simples — NOUVEAU]
    Vérifie qu'un formulaire de création de nouveau membre est valide
    avant de l'envoyer au serveur (module Membres, section 4.1 du FRD).
