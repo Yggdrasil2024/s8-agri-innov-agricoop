@@ -32,8 +32,6 @@
    Astuce   : "  ".trim() donne une chaîne vide "". */
 function validerFormulaireLogin(donnees) {
   // TODO : à compléter
-  if (donnees.nom_utilisateur.trim() && donnees.mot_de_passe) return true;
-  return false;
 }
 
 /* [Dev FS1 — Tableau de bord — niveau S7 : boucle + condition]
@@ -59,7 +57,11 @@ function compterJoursActifs(livraisonsParJour, seuil) {
    Retourne   : un nouveau tableau ne contenant que les membres dont
                 .statut_cotisation est égal au statut demandé. */
 function filtrerMembresParStatut(membres, statut) {
-  // TODO : à compléter
+  if (!Array.isArray(membres)) {
+    return [];
+  }
+
+  return membres.filter((membre) => membre.statut_cotisation === statut);
 }
 
 /* [Dev FS2 — Membres — niveau S8 : tableau .filter + méthode de chaîne]
@@ -70,7 +72,20 @@ function filtrerMembresParStatut(membres, statut) {
                 tous les membres tels quels.
    Astuce     : "Jean Mabiala".toLowerCase().includes("jean") -> true */
 function rechercherMembreParNom(membres, texte) {
-  // TODO : à compléter
+  if (!Array.isArray(membres)) {
+    return [];
+  }
+
+  if (!texte || texte.trim() === "") {
+    return membres;
+  }
+
+  const texteRecherche = texte.toLowerCase();
+
+  return membres.filter((membre) => {
+    const nom = membre.nom.toLowerCase();
+    return nom.includes(texteRecherche);
+  });
 }
 
 /* [Dev FS2 — Membres — niveau S7 : conditions simples — NOUVEAU]
@@ -85,8 +100,195 @@ function rechercherMembreParNom(membres, texte) {
               -> {valide: false, erreurs: ["Le prénom est obligatoire.",
                                             "Le contact est obligatoire."]} */
 function validerFormulaireNouveauMembre(donnees) {
-  // TODO : à compléter
+  const erreurs = [];
+
+  if (!donnees) {
+    return { valide: false, erreurs: ["Tous les champs sont obligatoires."] };
+  }
+
+  if (typeof donnees.nom !== "string" || donnees.nom.trim() === "") {
+    erreurs.push("Le nom est obligatoire.");
+  }
+
+  if (typeof donnees.prenom !== "string" || donnees.prenom.trim() === "") {
+    erreurs.push("Le prénom est obligatoire.");
+  }
+
+  if (typeof donnees.village !== "string" || donnees.village.trim() === "") {
+    erreurs.push("Le village est obligatoire.");
+  }
+
+  if (typeof donnees.contact !== "string" || donnees.contact.trim() === "") {
+    erreurs.push("Le contact est obligatoire.");
+  }
+
+  return {
+    valide: erreurs.length === 0,
+    erreurs,
+  };
 }
+
+function initFormulaireNouveauMembre() {
+  const form = document.getElementById("form-nouveau-membre");
+  if (!form || form.dataset.gereParFunctions === "true") {
+    return;
+  }
+
+  form.dataset.gereParFunctions = "true";
+
+  form.addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
+
+    const donnees = {
+      prenom: document.getElementById("nm-prenom").value,
+      nom: document.getElementById("nm-nom").value,
+      village: document.getElementById("nm-village").value,
+      contact: document.getElementById("nm-contact").value,
+    };
+
+    const erreursCible = document.getElementById("erreurs-nouveau-membre");
+    const succesCible = document.getElementById("message-succes-nouveau-membre");
+
+    const validation = validerFormulaireNouveauMembre(donnees);
+    if (!validation.valide) {
+      if (erreursCible) {
+        erreursCible.innerHTML =
+          "<ul>" +
+          validation.erreurs.map((erreur) => `<li>${erreur}</li>`).join("") +
+          "</ul>";
+        erreursCible.hidden = false;
+      }
+      if (succesCible) {
+        succesCible.hidden = true;
+      }
+      return;
+    }
+
+    if (erreursCible) {
+      erreursCible.hidden = true;
+      erreursCible.innerHTML = "";
+    }
+
+    try {
+      const reponse = await fetch(`${window.API_URL || "http://localhost:5000/api"}/membres`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(donnees),
+      });
+      const resultat = await reponse.json();
+
+      if (resultat.succes) {
+        if (succesCible) {
+          succesCible.textContent = `Membre créé : ${resultat.membre.nom}.`;
+          succesCible.hidden = false;
+        }
+        form.reset();
+
+        if (typeof window.initMembres === "function") {
+          await window.initMembres();
+        }
+      } else {
+        if (erreursCible) {
+          erreursCible.innerHTML =
+            "<ul>" +
+            (resultat.anomalies || ["Erreur inconnue."]).map((anomalie) => `<li>${anomalie}</li>`).join("") +
+            "</ul>";
+          erreursCible.hidden = false;
+        }
+        if (succesCible) {
+          succesCible.hidden = true;
+        }
+      }
+    } catch (e) {
+      if (erreursCible) {
+        erreursCible.textContent = "Impossible de contacter le serveur.";
+        erreursCible.hidden = false;
+      }
+      console.error(e);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initFormulaireNouveauMembre();
+});
+
+// Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
+function initNavigationActive() {
+  const liens = document.querySelectorAll(".sidebar .menu__list a");
+  const pageCourante = window.location.pathname;
+
+  liens.forEach((lien) => {
+    const href = lien.getAttribute("href");
+    if (!href) {
+      return;
+    }
+
+    const estDefiniDansLeHtml =
+      lien.classList.contains("active") || lien.hasAttribute("aria-current");
+    const cible = new URL(href, window.location.href);
+    const estActive = estDefiniDansLeHtml
+      ? lien.classList.contains("active") || cible.pathname === pageCourante
+      : cible.pathname === pageCourante;
+
+    lien.classList.toggle("active", estActive);
+    if (estActive) {
+      lien.setAttribute("aria-current", "page");
+    } else {
+      lien.removeAttribute("aria-current");
+    }
+  });
+}
+
+initNavigationActive();
+
+function initResponsiveSidebar() {
+  const burger = document.querySelector(".mobile-toggle");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.querySelector(".overlay");
+  const closeButton = document.querySelector(".sidebar-close");
+
+  if (!burger || !sidebar || !overlay) return;
+
+  function ouvrirMenu() {
+    sidebar.classList.add("open");
+    overlay.classList.add("active");
+    document.body.classList.add("menu-open");
+  }
+
+  function fermerMenu() {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }
+
+  burger.addEventListener("click", () => {
+    if (sidebar.classList.contains("open")) {
+      fermerMenu();
+    } else {
+      ouvrirMenu();
+    }
+  });
+
+  if (closeButton) {
+    closeButton.addEventListener("click", fermerMenu);
+  }
+
+  overlay.addEventListener("click", fermerMenu);
+
+  sidebar.querySelectorAll("a").forEach((lien) => {
+    lien.addEventListener("click", fermerMenu);
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      fermerMenu();
+    }
+  });
+}
+
+initResponsiveSidebar();
 
 /* [Dev FS3 — Livraisons — niveau S7 : conditions imbriquées]
    Vérifie qu'un formulaire d'enregistrement de livraison est valide.
@@ -100,29 +302,6 @@ function validerFormulaireNouveauMembre(donnees) {
    Astuce   : Number("abc") vaut NaN ; Number("40") vaut 40. */
 function validerFormulaireLivraison(donnees) {
   // TODO : à compléter
-  function validerFormulaireLivraison(donnees) {
-  if (!donnees) return false;
-
-  const { membre_id, culture, quantite } = donnees;
-
-  // membre_id ne doit pas être vide
-  if (membre_id === undefined || membre_id === null || membre_id === "") {
-    return false;
-  }
-
-  // culture ne doit pas être vide
-  if (!culture || culture.trim() === "") {
-    return false;
-  }
-
-  // quantite doit être un nombre strictement supérieur à 0
-  const quantiteNombre = Number(quantite);
-  if (isNaN(quantiteNombre) || quantiteNombre <= 0) {
-    return false;
-  }
-
-  return true;
-}
 }
 
 /* [Dev FS3 — Livraisons — niveau S8 : tableau .sort]
@@ -134,11 +313,6 @@ function validerFormulaireLivraison(donnees) {
                directement (ordre alphabétique = ordre chronologique). */
 function trierLivraisonsParDate(livraisons) {
   // TODO : à compléter
-  function trierLivraisonsParDate(livraisons) {
-  if (!Array.isArray(livraisons)) return [];
-
-  return [...livraisons].sort((a, b) => b.date.localeCompare(a.date));
-}
 }
 
 /* [Dev FS4 — Paiements — niveau S7 : conditions imbriquées]
@@ -153,31 +327,8 @@ function trierLivraisonsParDate(livraisons) {
      - mode_paiement doit être "Espèces" ou "Mobile Money"
    Retourne : true si tout est valide, false sinon. */
 function validerFormulairePaiement(donnees) {
-  const { membre, montant, mode, soldeDu } = donnees;
- 
-  if (!membre) {
-    return { valide: false, message: 'Veuillez choisir un membre.' };
-  }
- 
-  if (isNaN(montant) || montant === null || montant === undefined || montant <= 0) {
-    return { valide: false, message: 'Montant vide.' };
-  }
- 
-  if (!mode) {
-    return { valide: false, message: 'Veuillez choisir un mode de paiement.' };
-  }
- 
-  // EX-17 : blocage strict du surpaiement (Paiement <= Solde Dû)
-  if (soldeDu !== null && soldeDu !== undefined && montant > soldeDu) {
-    return {
-      valide: false,
-      message: `Le montant dépasse le solde dû (${soldeDu.toLocaleString('fr-FR')} FCFA).`
-    };
-  }
- 
-  return { valide: true, message: '' };
+  // TODO : à compléter
 }
- 
 
 /* [Dev FS4 — Paiements — niveau S7/S8 : boucle + accumulateur]
    Calcule le montant total d'une liste de paiements, pour l'indicateur
@@ -186,11 +337,7 @@ function validerFormulairePaiement(donnees) {
    Retourne  : un nombre (la somme de tous les montants).
    Exemple   : calculerTotalPaiements([{montant:5000},{montant:3000}]) -> 8000 */
 function calculerTotalPaiements(paiements) {
- let total = 0;
-  for (let i = 0; i < paiements.length; i++) {
-    total += paiements[i].montant;
-  }
-  return total;
+  // TODO : à compléter
 }
 
 /* [Dev FS5 — Ventes & Stock — niveau S7/S8 : condition sur un nombre]
@@ -202,13 +349,7 @@ function calculerTotalPaiements(paiements) {
      - 50 kg ou plus       -> "Disponible"
    Retourne : une chaîne de caractères. */
 function getBadgeStock(quantiteDisponible) {
-  if (quantiteDisponible === 0) {
-    return "Épuisé";
-  } else if (quantiteDisponible >= 1 && quantiteDisponible <= 49) {
-    return "Stock faible";
-  } else if (quantiteDisponible >= 59) {
-    return "Disponible";
-  }
+  // TODO : à compléter
 }
 
 /* [Dev FS5 — fonction transverse — niveau S8 : propriétés d'objet + formatage]
@@ -259,5 +400,6 @@ if (typeof module !== "undefined") {
     getBadgeStock,
     trierClassementParVolume,
     formaterMontant,
+    initNavigationActive,
   };
 }
