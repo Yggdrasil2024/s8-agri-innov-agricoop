@@ -5,14 +5,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AgriCoop Connect — Ventes & Stock</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="ventes.css">
 </head>
 
 <body>
 
-  <!-- NAVIGATION — TODO (Dev FS5) -->
-
   <main>
+
+
+    <aside class="sidebar">
+      <div class="caption">
+        <h1><i>🌿</i><span> AgriCoop Connect</span></h1>
+      </div>
+
+      <input id="sidebar-toggler" type="checkbox">
+      <label for="sidebar-toggler">
+        <i class="fa-solid fa-bars"></i>
+      </label>
+
+
+      <ul id="menu" class="menu">
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Comptes</span>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Livraisons</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Membres</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Paiements</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Ventes</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class=""></i>
+            <span>Statistiques</span>
+          </a>
+        </li>
+      </ul>
+
+      <form action="">
+        <button id="submit" type="submit">
+          Deconnexion
+        </button>
+      </form>
+    </aside>
+
     <div class="main-container">
       <section class="header">
         <div class="section-container">
@@ -68,12 +134,12 @@
           <form action="#">
             <div class="form-field-container">
               <label for="client">Acheteur</label>
-              <input placeholder="Ex: Christine" id="client" type="text">
+              <input placeholder="Ex: Christine" id="client" type="text" required>
             </div>
 
             <div class="form-field-container">
               <label for="culture">culture</label>
-              <select class="crops-selector" name="culture" id="culture">
+              <select class="crops-selector" name="culture" id="culture" required>
                 <option value="Arachide">Arachide</option>
                 <option value="Manioc">Manioc</option>
                 <option value="Maïs">Maïs</option>
@@ -82,12 +148,12 @@
 
             <div class="form-field-container">
               <label for="quantité">Quantité (kg)</label>
-              <input placeholder="Ex: 450" id="quantité" type="number">
+              <input placeholder="Ex: 450" id="quantité" type="number" required>
             </div>
 
             <div class="form-field-container">
               <label for="prix_negocier">Prix négocier (FCFA/kg)</label>
-              <input placeholder="Ex: 350" id="prix_negocier" type="number">
+              <input placeholder="Ex: 350" id="prix_negocier" type="number" required>
             </div>
 
             <div class="form-field-container">
