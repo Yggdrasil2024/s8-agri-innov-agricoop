@@ -221,7 +221,7 @@ function formaterMontant(montant) {
    Paramètre : classement (tableau d'objets), chaque élément a .volume_total (nombre)
    Retourne  : le tableau trié par .volume_total décroissant. */
 function trierClassementParVolume(classement) {
-  // TODO : à compléter
+  return classement.sort((a, b) => b.volume_total - a.volume_total);
 }
 
 /* [Dev FS6 — fonction transverse — niveau S8 : propriétés d'objet + formatage]
@@ -231,7 +231,8 @@ function trierClassementParVolume(classement) {
    Retourne  : une chaîne au format "12/07/2026".
    Astuce    : dateStr.split("-") donne ["2026", "07", "12"]. */
 function formaterDate(dateStr) {
-  // TODO : à compléter
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 /* NE PAS MODIFIER — rend vos fonctions accessibles à main.js et aux tests */
