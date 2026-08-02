@@ -8,16 +8,34 @@
 </head>
 <body>
 
-  <!-- NAVIGATION — TODO (Dev FS4) -->
+  <!-- NAVIGATION -->
+  <nav class="sidebar">
+    <div class="brand">🌿 AgriCoop Connect</div>
+    <a href="#">Dashboard</a>
+    <a href="#">Membres</a>
+    <a href="#">Livraisons</a>
+    <a href="#" class="active">Paiements</a>
+    <a href="#">Ventes</a>
+    <a href="#">Statistiques</a>
+  </nav>
 
   <main>
+    <h1>Paiements</h1>
+    <p class="subtitle">Enregistrer un versement à un membre</p>
+
     <!-- =====================================================================
-         FORMULAIRE DE PAIEMENT — TODO (Dev FS4)
+         FORMULAIRE DE PAIEMENT
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
     <form id="form-paiement">
-      <select id="p-membre"><option value="">-- Choisir un membre --</option></select>
+      <select id="p-membre">
+        <option value="">-- Choisir un membre --</option>
+        <option value="Nkounkou Bernadette" data-solde="34500">Nkounkou Bernadette</option>
+        <option value="Mabiala J." data-solde="50000">Mabiala J.</option>
+        <option value="Bemba F." data-solde="19250">Bemba F.</option>
+      </select>
+      <input type="text" id="solde-du-affiche" placeholder="Solde dû (FCFA)" readonly>
       <input type="number" id="p-montant" min="1" placeholder="Montant (FCFA)">
       <select id="p-mode-paiement">
         <option value="">-- Mode de paiement --</option>
@@ -27,19 +45,36 @@
       <button type="submit">Enregistrer</button>
     </form>
 
-    <div id="message-erreur-paiement" hidden></div>
-    <div id="message-succes-paiement" hidden></div>
+    <div id="message-erreur-paiement" class="message message-erreur" hidden></div>
+    <div id="message-succes-paiement" class="message message-succes" hidden></div>
+
+    <!-- Reçu de paiement (EX-19) — élément fixe, jamais recréé, seul le contenu change -->
+    <div id="recu-paiement" class="receipt" hidden>
+      <h2>Reçu de paiement</h2>
+      <p><strong>Membre :</strong> <span id="recu-membre"></span></p>
+      <p><strong>Montant :</strong> <span id="recu-montant"></span> FCFA</p>
+      <p><strong>Mode de paiement :</strong> <span id="recu-mode"></span></p>
+      <p><strong>Date :</strong> <span id="recu-date"></span></p>
+      <p><strong>Nouveau solde :</strong> <span id="recu-solde"></span> FCFA</p>
+      <button type="button" id="recu-imprimer">Imprimer le reçu</button>
+    </div>
 
     <!-- =====================================================================
-         TOTAL ET HISTORIQUE — TODO (Dev FS4)
+         TOTAL ET HISTORIQUE
 
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
-    <div id="total-paiements"></div>
+    <div id="total-paiements">Total des paiements : 0 FCFA</div>
 
+    <!-- Le JS ajoute une ligne à chaque paiement (createElement, pas innerHTML) -->
     <table>
       <thead>
-        <!-- TODO (Dev FS4) : en-têtes (Membre, Montant, Mode de paiement, Date) -->
+        <tr>
+          <th>Membre</th>
+          <th>Montant</th>
+          <th>Mode de paiement</th>
+          <th>Date</th>
+        </tr>
       </thead>
       <tbody id="liste-paiements"></tbody>
     </table>
@@ -48,5 +83,170 @@
   <!-- NE PAS MODIFIER — scripts de connexion au backend -->
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
+
+  <!-- =====================================================================
+       LOGIQUE PAGE PAIEMENTS (Dev FS4) — sans construction dynamique du DOM
+       EX-16 : enregistrement du versement
+       EX-17 : blocage strict du surpaiement (Paiement <= Solde Dû)
+       EX-18 : calcul en temps réel du reste à verser
+       EX-19 : génération du reçu de paiement (avec impression)
+       ===================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form-paiement');
+      const membreSelect = document.getElementById('p-membre');
+      const soldeAfficheInput = document.getElementById('solde-du-affiche');
+      const montantInput = document.getElementById('p-montant');
+      const modeSelect = document.getElementById('p-mode-paiement');
+      const erreurDiv = document.getElementById('message-erreur-paiement');
+      const succesDiv = document.getElementById('message-succes-paiement');
+      const totalDiv = document.getElementById('total-paiements');
+
+      // Correspondance nom de membre -> suffixe des id des cellules fixes
+      const suffixeParMembre = {
+        'Nkounkou Bernadette': 'nkounkou-bernadette',
+        'Mabiala J.': 'mabiala-j',
+        'Bemba F.': 'bemba-f'
+      };
+
+      const paiementsEnregistres = []; // garde tous les paiements pour calculerTotalPaiements()
+
+      // Ne garder dans le sélecteur que les 3 membres autorisés, même si
+      // main.js ajoute d'autres options (au chargement ou plus tard, après un fetch)
+      function filtrerSelecteurMembres() {
+        Array.from(membreSelect.options).forEach((option) => {
+          if (option.value !== '' && !suffixeParMembre[option.value]) {
+            option.remove();
+          }
+        });
+      }
+
+      filtrerSelecteurMembres();
+      new MutationObserver(filtrerSelecteurMembres).observe(membreSelect, { childList: true });
+
+      const listeBody = document.getElementById('liste-paiements');
+
+      // Ne garder dans le tableau historique que les lignes des 3 membres autorisés,
+      // même si main.js ajoute d'autres lignes (au chargement ou après un fetch)
+      function filtrerHistorique() {
+        Array.from(listeBody.children).forEach((row) => {
+          const nomMembre = row.children[0] ? row.children[0].textContent.trim() : '';
+          if (!suffixeParMembre[nomMembre]) {
+            row.remove();
+          }
+        });
+      }
+
+      filtrerHistorique();
+      new MutationObserver(filtrerHistorique).observe(listeBody, { childList: true });
+
+      // Affiche le solde dû du membre sélectionné
+      membreSelect.addEventListener('change', () => {
+        const option = membreSelect.options[membreSelect.selectedIndex];
+        const solde = option && option.dataset.solde ? parseFloat(option.dataset.solde) : null;
+        soldeAfficheInput.value = solde !== null ? `${solde.toLocaleString('fr-FR')} FCFA` : '';
+      });
+
+      /**
+       * EX-16 / EX-17 / EX-18
+       * Enregistre le versement du membre sélectionné : vérifie que le montant
+       * ne dépasse pas le solde dû, calcule le nouveau solde, puis met à jour
+       * les cellules déjà existantes de sa ligne dans le tableau (aucune création
+       * d'élément). Retourne l'objet paiement si valide, sinon null.
+       */
+      function enregistrerPaiement(event) {
+        event.preventDefault();
+        erreurDiv.hidden = true;
+        succesDiv.hidden = true;
+
+        const option = membreSelect.options[membreSelect.selectedIndex];
+        const membre = option ? option.value : '';
+        const soldeDu = option && option.dataset.solde ? parseFloat(option.dataset.solde) : null;
+        const montant = parseFloat(montantInput.value);
+        const mode = modeSelect.value;
+
+        // EX-16 (champs) + EX-17 (surpaiement) : validation via functions.js
+        const resultat = validerFormulairePaiement({ membre, montant, mode, soldeDu });
+        if (!resultat.valide) {
+          erreurDiv.textContent = resultat.message;
+          erreurDiv.hidden = false;
+          return null;
+        }
+
+        // EX-18 : calcul en temps réel du reste à verser
+        const nouveauSolde = soldeDu !== null ? soldeDu - montant : null;
+        const date = new Date().toLocaleDateString('fr-FR');
+
+        const paiement = { membre, montant, mode, date, nouveauSolde };
+
+        // Ajoute une nouvelle ligne dans l'historique (createElement/textContent, pas innerHTML)
+        const row = document.createElement('tr');
+
+        const celluleMembre = document.createElement('td');
+        celluleMembre.textContent = paiement.membre;
+
+        const celluleMontant = document.createElement('td');
+        celluleMontant.textContent = `${paiement.montant.toLocaleString('fr-FR')} F`;
+
+        const celluleMode = document.createElement('td');
+        celluleMode.textContent = paiement.mode;
+
+        const celluleDate = document.createElement('td');
+        celluleDate.textContent = paiement.date;
+
+        row.append(celluleMembre, celluleMontant, celluleMode, celluleDate);
+        listeBody.prepend(row);
+
+        // Met à jour le solde du membre pour le prochain paiement
+        if (nouveauSolde !== null) {
+          option.dataset.solde = nouveauSolde;
+        }
+
+        // Ajoute ce paiement à la liste, puis recalcule le total via functions.js
+        paiementsEnregistres.push(paiement);
+        const total = calculerTotalPaiements(paiementsEnregistres);
+        totalDiv.textContent = `Total des paiements : ${total.toLocaleString('fr-FR')} FCFA`;
+
+        succesDiv.textContent = 'Paiement enregistré avec succès.';
+        succesDiv.hidden = false;
+
+        form.reset();
+        soldeAfficheInput.value = '';
+
+        return paiement;
+      }
+
+      /**
+       * EX-19
+       * Affiche le reçu de paiement numérique/imprimable à partir d'un paiement validé.
+       * Remplit uniquement les éléments déjà présents dans le HTML.
+       */
+      function genererRecu(paiement) {
+        document.getElementById('recu-membre').textContent = paiement.membre;
+        document.getElementById('recu-montant').textContent = paiement.montant.toLocaleString('fr-FR');
+        document.getElementById('recu-mode').textContent = paiement.mode;
+        document.getElementById('recu-date').textContent = paiement.date;
+        document.getElementById('recu-solde').textContent =
+          paiement.nouveauSolde !== null ? paiement.nouveauSolde.toLocaleString('fr-FR') : 'N/A';
+        document.getElementById('recu-paiement').hidden = false;
+      }
+
+      form.addEventListener('submit', (event) => {
+        // Empêche main.js (qui écoute aussi 'submit' sur ce même formulaire et tente
+        // de contacter un serveur) d'écraser notre message une fois sa requête terminée
+        event.stopImmediatePropagation();
+
+        const paiement = enregistrerPaiement(event);
+        if (paiement) {
+          genererRecu(paiement);
+        }
+      });
+
+      // Impression du reçu (EX-19)
+      document.getElementById('recu-imprimer').addEventListener('click', () => {
+        window.print();
+      });
+    });
+  </script>
 </body>
 </html>

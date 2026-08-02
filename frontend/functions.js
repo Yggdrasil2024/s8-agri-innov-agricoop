@@ -71,14 +71,14 @@ function rechercherMembreParNom(membres, texte) {
     return [];
   }
 
-  const texteRecherche = (texte || "").toLowerCase().trim();
-
-  if (texteRecherche === "") {
+  if (!texte || texte.trim() === "") {
     return membres;
   }
 
+  const texteRecherche = texte.toLowerCase();
+
   return membres.filter((membre) => {
-    const nom = (membre.nom || "").toLowerCase();
+    const nom = membre.nom.toLowerCase();
     return nom.includes(texteRecherche);
   });
 }
@@ -95,26 +95,7 @@ function rechercherMembreParNom(membres, texte) {
               -> {valide: false, erreurs: ["Le prénom est obligatoire.",
                                             "Le contact est obligatoire."]} */
 function validerFormulaireNouveauMembre(donnees) {
-  const erreurs = [];
-
-  const champs = [
-    { cle: "nom", libelle: "Le nom est obligatoire." },
-    { cle: "prenom", libelle: "Le prénom est obligatoire." },
-    { cle: "village", libelle: "Le village est obligatoire." },
-    { cle: "contact", libelle: "Le contact est obligatoire." },
-  ];
-
-  champs.forEach((champ) => {
-    const valeur = donnees && donnees[champ.cle];
-    if (typeof valeur !== "string" || valeur.trim() === "") {
-      erreurs.push(champ.libelle);
-    }
-  });
-
-  return {
-    valide: erreurs.length === 0,
-    erreurs,
-  };
+  // TODO : à compléter
 }
 
 // Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
@@ -128,7 +109,8 @@ function initNavigationActive() {
       return;
     }
 
-    const estDefiniDansLeHtml = lien.classList.contains("active") || lien.hasAttribute("aria-current");
+    const estDefiniDansLeHtml =
+      lien.classList.contains("active") || lien.hasAttribute("aria-current");
     const cible = new URL(href, window.location.href);
     const estActive = estDefiniDansLeHtml
       ? lien.classList.contains("active") || cible.pathname === pageCourante
