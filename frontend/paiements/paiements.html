@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AgriCoop Connect — Paiements</title>
   <link rel="stylesheet" href="paiements.css">
 </head>
+
 <body>
 
   <!-- NAVIGATION -->
@@ -160,15 +162,35 @@
         succesDiv.hidden = true;
 
         const option = membreSelect.options[membreSelect.selectedIndex];
-        const membre = option ? option.value : '';
+        const membre_id = option ? option.value : '';
         const soldeDu = option && option.dataset.solde ? parseFloat(option.dataset.solde) : null;
         const montant = parseFloat(montantInput.value);
-        const mode = modeSelect.value;
+        const mode_paiement = modeSelect.value;
 
         // EX-16 (champs) + EX-17 (surpaiement) : validation via functions.js
-        const resultat = validerFormulairePaiement({ membre, montant, mode});
+        const valide = validerFormulairePaiement({ membre_id, montant, mode_paiement });
+        /*
         if (!resultat.valide) {
+
           erreurDiv.textContent = resultat.message;
+          erreurDiv.hidden = false;
+          return null;
+        }*/
+
+        if (!valide) {
+          //messages d'erreur
+          if (!membre_id) {
+            erreurDiv.textContent = "Veiller selectionner un membre.";
+          } else if (isNaN(montant) || montant <= 0) {
+            erreurDiv.textContent = "Veuillez rentrer un montant superieur à 0";
+          } else if (soldeDu !== null && soldeDu < montant) {
+            erreurDiv.textContent = `le montant est superieur au solde dû ${soldeDu.toLocaleString("fr-FR")} FCFA.`;
+          } else if (!mode_paiement) {
+            erreurDiv.textContent = "veuiller choisir un mode de paiement.";
+          } else {
+            erreurDiv.textContent = "information de paiement invalides."
+          }
+
           erreurDiv.hidden = false;
           return null;
         }
@@ -179,19 +201,19 @@
         const nouveauSolde = soldeDu !== null ? soldeDu - montant : null;
         const date = new Date().toLocaleDateString('fr-FR');
 
-        const paiement = { membre, montant, mode, date, nouveauSolde };
+        const paiement = { membre_id, montant, mode_paiement, date, nouveauSolde };
 
         // Ajoute une nouvelle ligne dans l'historique (createElement/textContent, pas innerHTML)
         const row = document.createElement('tr');
 
         const celluleMembre = document.createElement('td');
-        celluleMembre.textContent = paiement.membre;
+        celluleMembre.textContent = paiement.membre_id;
 
         const celluleMontant = document.createElement('td');
         celluleMontant.textContent = `${paiement.montant.toLocaleString('fr-FR')} F`;
 
         const celluleMode = document.createElement('td');
-        celluleMode.textContent = paiement.mode;
+        celluleMode.textContent = paiement.mode_paiement;
 
         const celluleDate = document.createElement('td');
         celluleDate.textContent = paiement.date;
@@ -224,9 +246,9 @@
        * Remplit uniquement les éléments déjà présents dans le HTML.
        */
       function genererRecu(paiement) {
-        document.getElementById('recu-membre').textContent = paiement.membre;
+        document.getElementById('recu-membre').textContent = paiement.membre_id;
         document.getElementById('recu-montant').textContent = paiement.montant.toLocaleString('fr-FR');
-        document.getElementById('recu-mode').textContent = paiement.mode;
+        document.getElementById('recu-mode').textContent = paiement.mode_paiement;
         document.getElementById('recu-date').textContent = paiement.date;
         document.getElementById('recu-solde').textContent =
           paiement.nouveauSolde !== null ? paiement.nouveauSolde.toLocaleString('fr-FR') : 'N/A';
@@ -251,4 +273,5 @@
     });
   </script>
 </body>
+
 </html>
