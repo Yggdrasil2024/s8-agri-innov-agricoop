@@ -32,6 +32,8 @@
    Astuce   : "  ".trim() donne une chaîne vide "". */
 function validerFormulaireLogin(donnees) {
   // TODO : à compléter
+  if (donnees.nom_utilisateur.trim() && donnees.mot_de_passe) return true;
+  return false;
 }
 
 /* [Dev FS1 — Tableau de bord — niveau S7 : boucle + condition]
@@ -48,6 +50,7 @@ function compterJoursActifs(livraisonsParJour, seuil) {
       compte++;
     }
   }
+  return compte;
 }
 
 /* [Dev FS2 — Membres — niveau S8 : tableau .filter]
@@ -148,7 +151,9 @@ function initFormulaireNouveauMembre() {
     };
 
     const erreursCible = document.getElementById("erreurs-nouveau-membre");
-    const succesCible = document.getElementById("message-succes-nouveau-membre");
+    const succesCible = document.getElementById(
+      "message-succes-nouveau-membre",
+    );
 
     const validation = validerFormulaireNouveauMembre(donnees);
     if (!validation.valide) {
@@ -171,11 +176,14 @@ function initFormulaireNouveauMembre() {
     }
 
     try {
-      const reponse = await fetch(`${window.API_URL || "http://localhost:5000/api"}/membres`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(donnees),
-      });
+      const reponse = await fetch(
+        `${window.API_URL || "http://localhost:5000/api"}/membres`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(donnees),
+        },
+      );
       const resultat = await reponse.json();
 
       if (resultat.succes) {
@@ -192,7 +200,9 @@ function initFormulaireNouveauMembre() {
         if (erreursCible) {
           erreursCible.innerHTML =
             "<ul>" +
-            (resultat.anomalies || ["Erreur inconnue."]).map((anomalie) => `<li>${anomalie}</li>`).join("") +
+            (resultat.anomalies || ["Erreur inconnue."])
+              .map((anomalie) => `<li>${anomalie}</li>`)
+              .join("") +
             "</ul>";
           erreursCible.hidden = false;
         }
@@ -301,7 +311,22 @@ initResponsiveSidebar();
    Retourne : true si tout est valide, false sinon.
    Astuce   : Number("abc") vaut NaN ; Number("40") vaut 40. */
 function validerFormulaireLivraison(donnees) {
-  // TODO : à compléter
+  if (!donnees) return false;
+  const { membre_id, culture, quantite } = donnees;
+  // membre_id ne doit pas être vide
+  if (membre_id === undefined || membre_id === null || membre_id === "") {
+    return false;
+  }
+  // culture ne doit pas être vide
+  if (!culture || culture.trim() === "") {
+    return false;
+  }
+  // quantite doit être un nombre strictement supérieur à 0
+  const quantiteNombre = Number(quantite);
+  if (isNaN(quantiteNombre) || quantiteNombre <= 0) {
+    return false;
+  }
+  return true;
 }
 
 /* [Dev FS3 — Livraisons — niveau S8 : tableau .sort]
@@ -312,7 +337,8 @@ function validerFormulaireLivraison(donnees) {
    Astuce    : au format "AAAA-MM-JJ", comparer les chaînes fonctionne
                directement (ordre alphabétique = ordre chronologique). */
 function trierLivraisonsParDate(livraisons) {
-  // TODO : à compléter
+  if (!Array.isArray(livraisons)) return [];
+  return [...livraisons].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 /* [Dev FS4 — Paiements — niveau S7 : conditions imbriquées]
@@ -327,7 +353,34 @@ function trierLivraisonsParDate(livraisons) {
      - mode_paiement doit être "Espèces" ou "Mobile Money"
    Retourne : true si tout est valide, false sinon. */
 function validerFormulairePaiement(donnees) {
-  // TODO : à compléter
+  const { membre, montant, mode, soldeDu } = donnees;
+
+  if (!membre) {
+    return { valide: false, message: "Veuillez choisir un membre." };
+  }
+
+  if (
+    isNaN(montant) ||
+    montant === null ||
+    montant === undefined ||
+    montant <= 0
+  ) {
+    return { valide: false, message: "Montant vide." };
+  }
+
+  if (!mode) {
+    return { valide: false, message: "Veuillez choisir un mode de paiement." };
+  }
+
+  // EX-17 : blocage strict du surpaiement (Paiement <= Solde Dû)
+  if (soldeDu !== null && soldeDu !== undefined && montant > soldeDu) {
+    return {
+      valide: false,
+      message: `Le montant dépasse le solde dû (${soldeDu.toLocaleString("fr-FR")} FCFA).`,
+    };
+  }
+
+  return { valide: true, message: "" };
 }
 
 /* [Dev FS4 — Paiements — niveau S7/S8 : boucle + accumulateur]
@@ -337,7 +390,11 @@ function validerFormulairePaiement(donnees) {
    Retourne  : un nombre (la somme de tous les montants).
    Exemple   : calculerTotalPaiements([{montant:5000},{montant:3000}]) -> 8000 */
 function calculerTotalPaiements(paiements) {
-  // TODO : à compléter
+  let total = 0;
+  for (let i = 0; i < paiements.length; i++) {
+    total += paiements[i].montant;
+  }
+  return total;
 }
 
 /* [Dev FS5 — Ventes & Stock — niveau S7/S8 : condition sur un nombre]
@@ -349,7 +406,13 @@ function calculerTotalPaiements(paiements) {
      - 50 kg ou plus       -> "Disponible"
    Retourne : une chaîne de caractères. */
 function getBadgeStock(quantiteDisponible) {
-  // TODO : à compléter
+  if (quantiteDisponible === 0) {
+    return "Épuisé";
+  } else if (quantiteDisponible >= 1 && quantiteDisponible <= 49) {
+    return "Stock faible";
+  } else if (quantiteDisponible >= 59) {
+    return "Disponible";
+  }
 }
 
 /* [Dev FS5 — fonction transverse — niveau S8 : propriétés d'objet + formatage]
