@@ -2,7 +2,7 @@
 ========================================================================
   TESTS AUTOMATIQUES — ÉQUIPE DATA SCIENCE
 ========================================================================
-AgriCoop Connect — Coopérative COMAKI, Kintélé
+agricoop connect — Coopérative COMAKI, Kintélé
 
 Lancez depuis le dossier backend :   python -m pytest -v
 

@@ -1,7 +1,7 @@
 /* =====================================================================
    FUNCTIONS.JS  —  À COMPLÉTER PAR L'ÉQUIPE FULL STACK
    =====================================================================
-   AgriCoop Connect — Coopérative COMAKI, Kintélé
+   agricoop connect — Coopérative COMAKI, Kintélé
 
    Vous êtes 6 devs Full Stack. Chacun possède une ou deux pages
    principales (voir README.md) et complète 2 ou 3 fonctions ci-dessous.
@@ -368,7 +368,10 @@ function validerFormulairePaiement(donnees) {
     return false;
   }
 
-  if (donnees.mode_paiement !== "Espèces" && donnees.mode_paiement !== "Mobile Money") {
+  if (
+    donnees.mode_paiement !== "Espèces" &&
+    donnees.mode_paiement !== "Mobile Money"
+  ) {
     return false;
   }
 

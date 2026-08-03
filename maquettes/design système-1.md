@@ -1,40 +1,22 @@
-\# 🌿 AgriCoop Connect — Design System
+\# 🌿 agricoop connect — Design System
 
+Projet : agricoop connect
 
-
-Projet : AgriCoop Connect  
-
-Équipe : Agri-Innov
-
-
+Équipe : agricoop connect
 
 \---
-
-
 
 \# 1. Police
 
-
-
 Le projet utilise la police \*\*Inter\*\*.
 
-
-
 ```css
-
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900\&display=swap");
-
 ```
-
-
 
 \---
 
-
-
 \# 2. Variables CSS
-
-
 
 ```css
 
@@ -198,19 +180,11 @@ Le projet utilise la police \*\*Inter\*\*.
 
 ```
 
-
-
 \---
-
-
 
 \# 3. Composants
 
-
-
 \## Bouton principal
-
-
 
 ```css
 
@@ -244,15 +218,9 @@ Le projet utilise la police \*\*Inter\*\*.
 
 ```
 
-
-
 \---
 
-
-
 \## Bouton secondaire
-
-
 
 ```css
 
@@ -268,15 +236,9 @@ Le projet utilise la police \*\*Inter\*\*.
 
 ```
 
-
-
 \---
 
-
-
 \## Bouton danger
-
-
 
 ```css
 
@@ -290,15 +252,9 @@ Le projet utilise la police \*\*Inter\*\*.
 
 ```
 
-
-
 \---
 
-
-
 \## Card
-
-
 
 ```css
 
@@ -318,15 +274,9 @@ Le projet utilise la police \*\*Inter\*\*.
 
 ```
 
-
-
 \---
 
-
-
 \## Inputs \& Select
-
-
 
 ```css
 
@@ -364,19 +314,11 @@ select:focus {
 
 ```
 
-
-
 \---
-
-
 
 \## Badges
 
-
-
 \### Succès
-
-
 
 ```css
 
@@ -390,11 +332,7 @@ select:focus {
 
 ```
 
-
-
 \### Avertissement
-
-
 
 ```css
 
@@ -408,11 +346,7 @@ select:focus {
 
 ```
 
-
-
 \### Erreur
-
-
 
 ```css
 
@@ -426,15 +360,9 @@ select:focus {
 
 ```
 
-
-
 \---
 
-
-
 \# 4. Tableau
-
-
 
 \- Fond blanc
 
@@ -450,15 +378,9 @@ select:focus {
 
 \- Défilement horizontal sur mobile
 
-
-
 \---
 
-
-
 \# 5. Sidebar
-
-
 
 \- Largeur : \*\*240px\*\*
 
@@ -474,15 +396,9 @@ select:focus {
 
 \- Hauteur : `100vh`
 
-
-
 \---
 
-
-
 \# 6. Header
-
-
 
 \- Hauteur : \*\*80px\*\*
 
@@ -494,101 +410,53 @@ select:focus {
 
 \- Padding horizontal : \*\*32px\*\*
 
-
-
 \---
-
-
 
 \# 7. Icônes
 
-
-
 Bibliothèque :
-
-
 
 \*\*Lucide Icons\*\*
 
-
-
 ```html
-
 <script src="https://unpkg.com/lucide@latest"></script>
-
 ```
 
-
-
 Taille recommandée :
-
-
 
 \- 20px
 
 \- 24px
 
-
-
 Couleur :
 
-
-
 ```css
-
 color: inherit;
-
 ```
 
-
-
 \---
-
-
 
 \# 8. Responsive
 
-
-
 \## Desktop
-
-
 
 ≥ 1024px
 
-
-
 \---
-
-
 
 \## Tablette
 
-
-
 768px — 1023px
 
-
-
 \---
-
-
 
 \## Mobile
 
-
-
 ≤ 767px
-
-
 
 \---
 
-
-
 \# 9. Espacements
-
-
 
 | Élément | Valeur |
 
@@ -602,59 +470,31 @@ color: inherit;
 
 | Gap Grid | 24px |
 
-
-
 \---
-
-
 
 \# 10. Animations
 
-
-
 Transition
 
-
-
 ```css
-
-transition: .3s ease;
-
+transition: 0.3s ease;
 ```
-
-
 
 Hover
 
-
-
 ```css
-
 transform: scale(1.02);
-
 ```
-
-
 
 Ombre
 
-
-
 ```css
-
 box-shadow: var(--shadow-md);
-
 ```
-
-
 
 \---
 
-
-
 \# 11. Typographie
-
-
 
 | Élément | Valeur |
 
@@ -670,33 +510,19 @@ box-shadow: var(--shadow-md);
 
 | Boutons | 600 |
 
-
-
 \---
 
-
-
 \# 12. Librairies utilisées
-
-
 
 \- Google Fonts (Inter)
 
 \- Remixicon
 
-
-
 \---
-
-
 
 \# 13. Philosophie UI
 
-
-
-Le design d'AgriCoop Connect repose sur les principes suivants :
-
-
+Le design d'agricoop connect repose sur les principes suivants :
 
 \- Simplicité
 
@@ -711,4 +537,3 @@ Le design d'AgriCoop Connect repose sur les principes suivants :
 \- Responsive First
 
 \- Interfaces inspirées des dashboards modernes (Notion, Linear, Tailwind UI, Flowbite)
-

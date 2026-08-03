@@ -3,35 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgriCoop Connect — Comptes</title>
+  <title>agricoop connect — Comptes</title>
   <link rel="stylesheet" href="comptes.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-  <div class="layout">
-    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle-input">
+  <!-- Bouton burger (mobile) -->
+<button class="burger" id="burger-btn" aria-label="Menu" aria-expanded="false">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
 
-    <aside class="sidebar">
-      <div class="sidebar-brand">AgriCoop COMAKI</div>
-      <nav class="sidebar-nav">
-        <a href="../dashboard/dashboard.html">Dashboard</a>
-        <a href="../membres/membres.html">Membres</a>
-        <a href="../livraisons/livraisons.html">Livraisons</a>
-        <a href="../paiements/paiements.html">Paiements</a>
-        <a href="../ventes/ventes.html">Ventes</a>
-        <a href="../statistiques/statistiques.html">Statistiques</a>
-        <a href="../comptes/comptes.html" class="active">Comptes</a>
-      </nav>
-    </aside>
+<!-- Overlay sombre (mobile) -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <div class="content-area">
-      <header class="topbar">
-        <label for="sidebar-toggle" class="sidebar-toggle-label"></label>
-        <div>
-          <h1>Comptes</h1>
-          <p class="sous-titre">Réservé à la Secrétaire — gestion des comptes utilisateurs</p>
-        </div>
-      </header>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <span class="logo-text">🌿 AgriCoop COMAKI</span>
+  </div>
+
+  <nav class="sidebar-nav" id="main-nav">
+    <ul class="nav-list">
+      <li>
+        <a href="../dashboard/dashboard.html" class="nav-link">
+          <i class="fas fa-home"></i> Tableau de bord
+        </a>
+      </li>
+      <li>
+        <a href="../membres/membres.html" class="nav-link">
+          <i class="fas fa-users"></i> Membres
+        </a>
+      </li>
+      <li>
+        <a href="../livraisons/livraisons.html" class="nav-link">
+          <i class="fas fa-truck"></i> Livraisons
+        </a>
+      </li>
+      <li>
+        <a href="../paiements/paiements.html" class="nav-link">
+          <i class="fas fa-credit-card"></i> Paiements
+        </a>
+      </li>
+      <li>
+        <a href="../ventes/ventes.html" class="nav-link">
+          <i class="fas fa-chart-line"></i> Ventes
+        </a>
+      </li>
+      <li>
+        <a href="../statistiques/statistiques.html" class="nav-link">
+          <i class="fas fa-chart-bar"></i> Statistiques
+        </a>
+      </li>
+      <li>
+        <a href="../comptes/comptes.html" class="nav-link active">
+          <i class="fas fa-user-cog"></i> Comptes
+        </a>
+      </li>
+      <li>
+        <a href="../login/login.html" class="nav-link">
+          <i class="fas fa-sign-in-alt"></i> Connexion
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
 
       <main>
         <!-- *** NE PAS MODIFIER l'id ci-dessous *** -->
@@ -73,5 +110,23 @@
   <!-- NE PAS MODIFIER – scripts de connexion au backend -->
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
+  <script>
+    const burger = document.getElementById('burger-btn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function toggleSidebar() {
+      const open = sidebar.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+      if (overlay) overlay.classList.toggle('visible', open);
+    }
+
+    if (burger && sidebar) {
+      burger.addEventListener('click', toggleSidebar);
+    }
+    if (overlay) {
+      overlay.addEventListener('click', toggleSidebar);
+    }
+  </script>
 </body>
 </html>

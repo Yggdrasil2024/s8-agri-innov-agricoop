@@ -2,7 +2,7 @@
 ========================================================================
   LOGIC.PY  —  À COMPLÉTER PAR L'ÉQUIPE DATA SCIENCE
 ========================================================================
-AgriCoop Connect — Coopérative COMAKI, Kintélé
+agricoop connect — Coopérative COMAKI, Kintélé
 
 Vous n'écrivez QUE des fonctions (ce que vous savez déjà faire : boucles,
 conditions, dictionnaires). Vous ne touchez à AUCUN autre fichier.

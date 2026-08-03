@@ -5,143 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="AgriCoop Connect — Gestion des membres de
-    la coopérative agricole"
+      content="agricoop connect — Gestion des membres de la coopérative agricole"
+    />
+    <title>agricoop connect — Membres</title>
+    <link rel="stylesheet" href="membres.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/remixicon@4.9.1/fonts/remixicon.min.css"
     />
-    <title>AgriCoop Connect — Membres</title>
-    <link rel="stylesheet" href="membres.css" />
   </head>
-
   <body>
-    <div class="overlay" aria-hidden="true"></div>
+    <!-- Bouton burger (mobile) -->
+    <button
+      class="burger"
+      id="burger-btn"
+      aria-label="Menu"
+      aria-expanded="false"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-    <!-- NAVIGATION — TODO (Dev FS2) -->
-    <header>
-      <section class="header__content" role="banner">
-        <button
-          class="mobile-toggle"
-          type="button"
-          aria-label="Ouvrir le menu"
-          aria-controls="sidebar-menu"
-        >
-          <i class="ri-menu-fill"></i>
-        </button>
+    <!-- Overlay sombre (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-        <div class="title">
-          <h1>Membres</h1>
-          <p class="subtitle">Gestion des membres de la coopérative</p>
-        </div>
-
-        <div class="header__user__info">
-          <div class="header__icon__user">
-            <i class="ri-user-fill" aria-hidden="true"></i>
-          </div>
-          <div class="header__content__user">
-            <span class="header__name__user">Sandra Malonga</span>
-            <span class="header__role__user">Administrateur</span>
-          </div>
-        </div>
-      </section>
-    </header>
-
-    <aside id="sidebar-menu" class="sidebar" aria-label="Navigation principale">
-      <button class="sidebar-close" type="button" aria-label="Fermer le menu">
-        <i class="ri-close-line"></i>
-      </button>
-
-      <div class="logo">
-        <h1>AgriCoop Connect</h1>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-text">🌿 AgriCoop COMAKI</span>
       </div>
 
-      <nav aria-label="Menu principal">
-        <input type="checkbox" id="menu-toggle" />
-        <label for="menu-toggle" class="menu__toggle">
-          <span></span>
-          <span></span>
-          <span></span>
-        </label>
-
-        <ul class="menu__list">
+      <nav class="sidebar-nav" id="main-nav">
+        <ul class="nav-list">
           <li>
-            <a href="../dashboard/dashboard.html">
-              <i class="ri-home-9-line" aria-hidden="true"></i>
-              Dashboard
+            <a href="../dashboard/dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i> Tableau de bord
             </a>
           </li>
-
           <li>
-            <a
-              href="../membres/membres.html"
-              class="active"
-              aria-current="page"
-            >
-              <i class="ri-group-fill" aria-hidden="true"></i>
-              Membres
+            <a href="../membres/membres.html" class="nav-link active">
+              <i class="fas fa-users"></i> Membres
             </a>
           </li>
-
           <li>
-            <a href="../livraisons/livraisons.html">
-              <i class="ri-shopping-cart-2-line" aria-hidden="true"></i>
-              Livraisons
+            <a href="../livraisons/livraisons.html" class="nav-link">
+              <i class="fas fa-truck"></i> Livraisons
             </a>
           </li>
-
           <li>
-            <a href="../paiements/paiements.html">
-              <i class="ri-wallet-3-fill" aria-hidden="true"></i>
-              Paiements
+            <a href="../paiements/paiements.html" class="nav-link">
+              <i class="fas fa-credit-card"></i> Paiements
             </a>
           </li>
-
           <li>
-            <a href="../ventes/ventes.html">
-              <i class="ri-refund-2-line" aria-hidden="true"></i>
-              Ventes
+            <a href="../ventes/ventes.html" class="nav-link">
+              <i class="fas fa-chart-line"></i> Ventes
             </a>
           </li>
-
           <li>
-            <a href="../statistiques/statistiques.html">
-              <i class="ri-line-chart-line" aria-hidden="true"></i>
-              Statistiques
+            <a href="../statistiques/statistiques.html" class="nav-link">
+              <i class="fas fa-chart-bar"></i> Statistiques
+            </a>
+          </li>
+          <li>
+            <a href="../comptes/comptes.html" class="nav-link">
+              <i class="fas fa-user-cog"></i> Comptes
+            </a>
+          </li>
+          <li>
+            <a href="../login/login.html" class="nav-link">
+              <i class="fas fa-sign-in-alt"></i> Connexion
             </a>
           </li>
         </ul>
-
-        <div class="user__info">
-          <div class="icon__user">
-            <i class="ri-user-fill" aria-hidden="true"></i>
-          </div>
-          <div class="content__user">
-            <span class="name__user">Sandra Malonga</span>
-            <span class="role__user">Administrateur</span>
-          </div>
-        </div>
       </nav>
     </aside>
 
-    <main class="content">
+    <main>
+      <h1>Membres</h1>
+      <p class="subtitle">Gestion des membres de la coopérative</p>
+
       <!-- =====================================================================
          FILTRES — TODO (Dev FS2)
-         Construire une zone de filtrage : un sélecteur de statut et un champ
-         de recherche par nom. Layout responsive.
-
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
       <section class="filtres" aria-label="Filtres de recherche des membres">
-        <input
-          type="text"
-          id="champ-recherche-membre"
-          placeholder="Rechercher un membre..."
-          autocomplete="off"
-        />
-        <i class="ri-search-line" aria-hidden="true"></i>
-
+        <div class="search-wrapper">
+          <i class="ri-search-line" aria-hidden="true"></i>
+          <input
+            type="text"
+            id="champ-recherche-membre"
+            placeholder="Rechercher un membre..."
+            autocomplete="off"
+          />
+        </div>
         <select id="filtre-statut" aria-label="Filtrer par statut">
           <option value="">Tous</option>
           <option value="À jour">À jour</option>
@@ -149,33 +110,28 @@
         </select>
       </section>
 
-      <section
-        class="content__nouveau__membre"
-        aria-label="Gestion des membres"
-      >
-        <!-- =====================================================================
+      <!-- =====================================================================
          NOUVEAU MEMBRE — TODO (Dev FS2)
-         Construire le formulaire de création d'un membre (module Membres,
-         nouveau — section 4.1 du FRD). Les 4 champs sont obligatoires.
-         Le village est un menu déroulant fermé (rempli par main.js depuis
-         la liste de référence de la coopérative), pas un champ libre.
-
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
-        ===================================================================== -->
-
+         ===================================================================== -->
+      <section class="layout-membres">
         <form
           id="form-nouveau-membre"
           aria-labelledby="titre-formulaire-membre"
         >
           <h2 id="titre-formulaire-membre">Ajouter un nouveau membre</h2>
+
           <label class="sr-only" for="nm-prenom">Prénom</label>
           <input type="text" id="nm-prenom" placeholder="Prénom" required />
+
           <label class="sr-only" for="nm-nom">Nom</label>
           <input type="text" id="nm-nom" placeholder="Nom" required />
+
           <label class="sr-only" for="nm-village">Village</label>
           <select id="nm-village" required>
             <option value="">-- Choisir un village --</option>
           </select>
+
           <label class="sr-only" for="nm-contact">Contact</label>
           <input
             type="text"
@@ -183,6 +139,7 @@
             placeholder="Contact (téléphone)"
             required
           />
+
           <div class="form-messages">
             <div id="erreurs-nouveau-membre" role="alert" hidden></div>
             <div
@@ -192,20 +149,19 @@
               hidden
             ></div>
           </div>
+
           <button type="submit" class="btn-primary">
-            <i class="ri-add-line" aria-hidden="true"></i>Créer le membre
+            <i class="ri-add-line" aria-hidden="true"></i> Créer le membre
           </button>
         </form>
 
         <!-- =====================================================================
-         LISTE DES MEMBRES — TODO (Dev FS2)
-         Le contenu est injecté par main.js. Le dev doit structurer le
-         conteneur et styliser les éléments .membre-ligne, .badge.
-
-         *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
-         ===================================================================== -->
+           LISTE DES MEMBRES — TODO (Dev FS2)
+           *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
+           ===================================================================== -->
         <section class="table-section" aria-labelledby="titre-liste-membres">
           <h2 id="titre-liste-membres">Liste des membres</h2>
+
           <div class="table-header">
             <span>Nom</span>
             <span>Village</span>
@@ -213,11 +169,13 @@
             <span>Statut</span>
             <span>Solde</span>
           </div>
+
           <div
             id="liste-membres"
             role="table"
             aria-label="Liste des membres"
           ></div>
+
           <div class="pagination">
             <button class="page-btn" type="button">Précédent</button>
             <span class="page-info">Page 1</span>
@@ -230,5 +188,23 @@
     <!-- NE PAS MODIFIER — scripts de connexion au backend -->
     <script src="../functions.js"></script>
     <script src="../main.js"></script>
+    <script>
+      const burger = document.getElementById("burger-btn");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebar-overlay");
+
+      function toggleSidebar() {
+        const open = sidebar.classList.toggle("open");
+        burger.setAttribute("aria-expanded", open);
+        if (overlay) overlay.classList.toggle("visible", open);
+      }
+
+      if (burger && sidebar) {
+        burger.addEventListener("click", toggleSidebar);
+      }
+      if (overlay) {
+        overlay.addEventListener("click", toggleSidebar);
+      }
+    </script>
   </body>
 </html>
