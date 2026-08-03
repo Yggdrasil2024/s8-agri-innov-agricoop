@@ -19,7 +19,6 @@
    Vérifiez votre travail : ouvrez functions.test.html dans le navigateur.
    ===================================================================== */
 
-
 /* [Dev FS1 — Connexion — niveau S7 : conditions simples]
    Vérifie qu'un formulaire de connexion est valide avant de l'envoyer au
    serveur (module Authentification, nouveau).
@@ -35,7 +34,6 @@ function validerFormulaireLogin(donnees) {
   // TODO : à compléter
 }
 
-
 /* [Dev FS1 — Tableau de bord — niveau S7 : boucle + condition]
    Compte le nombre de jours (parmi les entrées reçues) où le volume
    livré dépasse un seuil donné — utile pour repérer les pics d'activité.
@@ -44,9 +42,13 @@ function validerFormulaireLogin(donnees) {
    Exemple    : compterJoursActifs({"2026-07-08": 135, "2026-07-09": 60}, 100) -> 1
    Astuce     : Object.values(livraisonsParJour) donne un tableau des quantités. */
 function compterJoursActifs(livraisonsParJour, seuil) {
-  // TODO : à compléter
+  let compte = 0;
+  for (const quantite of Object.values(livraisonsParJour)) {
+    if (quantite > seuil) {
+      compte++;
+    }
+  }
 }
-
 
 /* [Dev FS2 — Membres — niveau S8 : tableau .filter]
    Garde uniquement les membres ayant un statut de cotisation donné.
@@ -55,9 +57,12 @@ function compterJoursActifs(livraisonsParJour, seuil) {
    Retourne   : un nouveau tableau ne contenant que les membres dont
                 .statut_cotisation est égal au statut demandé. */
 function filtrerMembresParStatut(membres, statut) {
-  // TODO : à compléter
-}
+  if (!Array.isArray(membres)) {
+    return [];
+  }
 
+  return membres.filter((membre) => membre.statut_cotisation === statut);
+}
 
 /* [Dev FS2 — Membres — niveau S8 : tableau .filter + méthode de chaîne]
    Garde uniquement les membres dont le nom contient le texte recherché
@@ -67,7 +72,20 @@ function filtrerMembresParStatut(membres, statut) {
                 tous les membres tels quels.
    Astuce     : "Jean Mabiala".toLowerCase().includes("jean") -> true */
 function rechercherMembreParNom(membres, texte) {
-  // TODO : à compléter
+  if (!Array.isArray(membres)) {
+    return [];
+  }
+
+  if (!texte || texte.trim() === "") {
+    return membres;
+  }
+
+  const texteRecherche = texte.toLowerCase();
+
+  return membres.filter((membre) => {
+    const nom = membre.nom.toLowerCase();
+    return nom.includes(texteRecherche);
+  });
 }
 
 /* [Dev FS2 — Membres — niveau S7 : conditions simples — NOUVEAU]
@@ -82,9 +100,195 @@ function rechercherMembreParNom(membres, texte) {
               -> {valide: false, erreurs: ["Le prénom est obligatoire.",
                                             "Le contact est obligatoire."]} */
 function validerFormulaireNouveauMembre(donnees) {
-  // TODO : à compléter
+  const erreurs = [];
+
+  if (!donnees) {
+    return { valide: false, erreurs: ["Tous les champs sont obligatoires."] };
+  }
+
+  if (typeof donnees.nom !== "string" || donnees.nom.trim() === "") {
+    erreurs.push("Le nom est obligatoire.");
+  }
+
+  if (typeof donnees.prenom !== "string" || donnees.prenom.trim() === "") {
+    erreurs.push("Le prénom est obligatoire.");
+  }
+
+  if (typeof donnees.village !== "string" || donnees.village.trim() === "") {
+    erreurs.push("Le village est obligatoire.");
+  }
+
+  if (typeof donnees.contact !== "string" || donnees.contact.trim() === "") {
+    erreurs.push("Le contact est obligatoire.");
+  }
+
+  return {
+    valide: erreurs.length === 0,
+    erreurs,
+  };
 }
 
+function initFormulaireNouveauMembre() {
+  const form = document.getElementById("form-nouveau-membre");
+  if (!form || form.dataset.gereParFunctions === "true") {
+    return;
+  }
+
+  form.dataset.gereParFunctions = "true";
+
+  form.addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    evt.stopImmediatePropagation();
+
+    const donnees = {
+      prenom: document.getElementById("nm-prenom").value,
+      nom: document.getElementById("nm-nom").value,
+      village: document.getElementById("nm-village").value,
+      contact: document.getElementById("nm-contact").value,
+    };
+
+    const erreursCible = document.getElementById("erreurs-nouveau-membre");
+    const succesCible = document.getElementById("message-succes-nouveau-membre");
+
+    const validation = validerFormulaireNouveauMembre(donnees);
+    if (!validation.valide) {
+      if (erreursCible) {
+        erreursCible.innerHTML =
+          "<ul>" +
+          validation.erreurs.map((erreur) => `<li>${erreur}</li>`).join("") +
+          "</ul>";
+        erreursCible.hidden = false;
+      }
+      if (succesCible) {
+        succesCible.hidden = true;
+      }
+      return;
+    }
+
+    if (erreursCible) {
+      erreursCible.hidden = true;
+      erreursCible.innerHTML = "";
+    }
+
+    try {
+      const reponse = await fetch(`${window.API_URL || "http://localhost:5000/api"}/membres`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(donnees),
+      });
+      const resultat = await reponse.json();
+
+      if (resultat.succes) {
+        if (succesCible) {
+          succesCible.textContent = `Membre créé : ${resultat.membre.nom}.`;
+          succesCible.hidden = false;
+        }
+        form.reset();
+
+        if (typeof window.initMembres === "function") {
+          await window.initMembres();
+        }
+      } else {
+        if (erreursCible) {
+          erreursCible.innerHTML =
+            "<ul>" +
+            (resultat.anomalies || ["Erreur inconnue."]).map((anomalie) => `<li>${anomalie}</li>`).join("") +
+            "</ul>";
+          erreursCible.hidden = false;
+        }
+        if (succesCible) {
+          succesCible.hidden = true;
+        }
+      }
+    } catch (e) {
+      if (erreursCible) {
+        erreursCible.textContent = "Impossible de contacter le serveur.";
+        erreursCible.hidden = false;
+      }
+      console.error(e);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initFormulaireNouveauMembre();
+});
+
+// Développé par moi DEV FS2 : active le lien du menu correspondant à la page ouverte.
+function initNavigationActive() {
+  const liens = document.querySelectorAll(".sidebar .menu__list a");
+  const pageCourante = window.location.pathname;
+
+  liens.forEach((lien) => {
+    const href = lien.getAttribute("href");
+    if (!href) {
+      return;
+    }
+
+    const estDefiniDansLeHtml =
+      lien.classList.contains("active") || lien.hasAttribute("aria-current");
+    const cible = new URL(href, window.location.href);
+    const estActive = estDefiniDansLeHtml
+      ? lien.classList.contains("active") || cible.pathname === pageCourante
+      : cible.pathname === pageCourante;
+
+    lien.classList.toggle("active", estActive);
+    if (estActive) {
+      lien.setAttribute("aria-current", "page");
+    } else {
+      lien.removeAttribute("aria-current");
+    }
+  });
+}
+
+initNavigationActive();
+
+function initResponsiveSidebar() {
+  const burger = document.querySelector(".mobile-toggle");
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.querySelector(".overlay");
+  const closeButton = document.querySelector(".sidebar-close");
+
+  if (!burger || !sidebar || !overlay) return;
+
+  function ouvrirMenu() {
+    sidebar.classList.add("open");
+    overlay.classList.add("active");
+    document.body.classList.add("menu-open");
+  }
+
+  function fermerMenu() {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("active");
+    document.body.classList.remove("menu-open");
+  }
+
+  burger.addEventListener("click", () => {
+    if (sidebar.classList.contains("open")) {
+      fermerMenu();
+    } else {
+      ouvrirMenu();
+    }
+  });
+
+  if (closeButton) {
+    closeButton.addEventListener("click", fermerMenu);
+  }
+
+  overlay.addEventListener("click", fermerMenu);
+
+  sidebar.querySelectorAll("a").forEach((lien) => {
+    lien.addEventListener("click", fermerMenu);
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      fermerMenu();
+    }
+  });
+}
+
+initResponsiveSidebar();
 
 /* [Dev FS3 — Livraisons — niveau S7 : conditions imbriquées]
    Vérifie qu'un formulaire d'enregistrement de livraison est valide.
@@ -100,7 +304,6 @@ function validerFormulaireLivraison(donnees) {
   // TODO : à compléter
 }
 
-
 /* [Dev FS3 — Livraisons — niveau S8 : tableau .sort]
    Trie une liste de livraisons par date, de la plus récente à la plus
    ancienne (utilisé par un bouton "trier" sur la page Livraisons).
@@ -111,7 +314,6 @@ function validerFormulaireLivraison(donnees) {
 function trierLivraisonsParDate(livraisons) {
   // TODO : à compléter
 }
-
 
 /* [Dev FS4 — Paiements — niveau S7 : conditions imbriquées]
    Vérifie qu'un formulaire d'enregistrement de paiement est valide
@@ -125,32 +327,8 @@ function trierLivraisonsParDate(livraisons) {
      - mode_paiement doit être "Espèces" ou "Mobile Money"
    Retourne : true si tout est valide, false sinon. */
 function validerFormulairePaiement(donnees) {
-  const { membre, montant, mode, soldeDu } = donnees;
- 
-  if (!membre) {
-    return { valide: false, message: 'Veuillez choisir un membre.' };
-  }
- 
-  if (isNaN(montant) || montant === null || montant === undefined || montant <= 0) {
-    return { valide: false, message: 'Montant vide.' };
-  }
- 
-  if (!mode) {
-    return { valide: false, message: 'Veuillez choisir un mode de paiement.' };
-  }
- 
-  // EX-17 : blocage strict du surpaiement (Paiement <= Solde Dû)
-  if (soldeDu !== null && soldeDu !== undefined && montant > soldeDu) {
-    return {
-      valide: false,
-      message: `Le montant dépasse le solde dû (${soldeDu.toLocaleString('fr-FR')} FCFA).`
-    };
-  }
- 
-  return { valide: true, message: '' };
+  // TODO : à compléter
 }
- 
-
 
 /* [Dev FS4 — Paiements — niveau S7/S8 : boucle + accumulateur]
    Calcule le montant total d'une liste de paiements, pour l'indicateur
@@ -159,13 +337,8 @@ function validerFormulairePaiement(donnees) {
    Retourne  : un nombre (la somme de tous les montants).
    Exemple   : calculerTotalPaiements([{montant:5000},{montant:3000}]) -> 8000 */
 function calculerTotalPaiements(paiements) {
- let total = 0;
-  for (let i = 0; i < paiements.length; i++) {
-    total += paiements[i].montant;
-  }
-  return total;
+  // TODO : à compléter
 }
-
 
 /* [Dev FS5 — Ventes & Stock — niveau S7/S8 : condition sur un nombre]
    Retourne un texte de badge selon la quantité disponible d'une culture.
@@ -179,7 +352,6 @@ function getBadgeStock(quantiteDisponible) {
   // TODO : à compléter
 }
 
-
 /* [Dev FS5 — fonction transverse — niveau S8 : propriétés d'objet + formatage]
    Met en forme un montant en FCFA, utilisée sur presque toutes les pages
    (tableau de bord, membres, livraisons, paiements).
@@ -188,8 +360,9 @@ function getBadgeStock(quantiteDisponible) {
    Exemple   : formaterMontant(23000) -> "23000 FCFA" */
 function formaterMontant(montant) {
   // TODO : à compléter
-}
 
+  return `${montant} FCFA`;
+}
 
 /* [Dev FS6 — Statistiques — niveau S8 : tableau .sort]
    Trie le classement des membres par volume total, du plus gros
@@ -197,9 +370,8 @@ function formaterMontant(montant) {
    Paramètre : classement (tableau d'objets), chaque élément a .volume_total (nombre)
    Retourne  : le tableau trié par .volume_total décroissant. */
 function trierClassementParVolume(classement) {
-  // TODO : à compléter
+  return classement.sort((a, b) => b.volume_total - a.volume_total);
 }
-
 
 /* [Dev FS6 — fonction transverse — niveau S8 : propriétés d'objet + formatage]
    Met en forme une date au format "AAAA-MM-JJ" en "JJ/MM/AAAA", utilisée
@@ -208,9 +380,9 @@ function trierClassementParVolume(classement) {
    Retourne  : une chaîne au format "12/07/2026".
    Astuce    : dateStr.split("-") donne ["2026", "07", "12"]. */
 function formaterDate(dateStr) {
-  // TODO : à compléter
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
 }
-
 
 /* NE PAS MODIFIER — rend vos fonctions accessibles à main.js et aux tests */
 if (typeof module !== "undefined") {
@@ -228,5 +400,6 @@ if (typeof module !== "undefined") {
     getBadgeStock,
     trierClassementParVolume,
     formaterMontant,
+    initNavigationActive,
   };
 }

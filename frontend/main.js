@@ -102,7 +102,8 @@ async function initDashboard() {
     }
   } catch (e) {
     // Ici, l'API est réellement injoignable (backend pas démarré, etc.)
-    cible.innerHTML = "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
+    cible.innerHTML =
+      "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
     console.error(e);
     return;
   }
@@ -111,19 +112,27 @@ async function initDashboard() {
   // encore codée), les autres s'affichent quand même normalement.
   try {
     const ind = data.indicateurs;
-    document.getElementById("carte-stock").textContent = ind.stock_total + " kg";
-    document.getElementById("carte-montant-du").textContent = formaterMontant(ind.montant_du_total);
-    document.getElementById("carte-membres").textContent = ind.nb_membres_actifs;
-    document.getElementById("carte-livraisons").textContent = ind.nb_livraisons_mois;
+    document.getElementById("carte-stock").textContent =
+      ind.stock_total + " kg";
+    document.getElementById("carte-montant-du").textContent = formaterMontant(
+      ind.montant_du_total,
+    );
+    document.getElementById("carte-membres").textContent =
+      ind.nb_membres_actifs;
+    document.getElementById("carte-livraisons").textContent =
+      ind.nb_livraisons_mois;
   } catch (e) {
-    cible.innerHTML = "Cartes indicateurs : vérifiez formaterMontant() dans functions.js.";
+    cible.innerHTML =
+      "Cartes indicateurs : vérifiez formaterMontant() dans functions.js.";
     console.error(e);
   }
 
   try {
     const joursActifs = document.getElementById("jours-actifs");
     if (joursActifs) {
-      joursActifs.textContent = compterJoursActifs(data.livraisons_par_jour, 80) + " jour(s) à forte activité (> 80 kg)";
+      joursActifs.textContent =
+        compterJoursActifs(data.livraisons_par_jour, 80) +
+        " jour(s) à forte activité (> 80 kg)";
     }
   } catch (e) {
     console.error("Section jours-actifs :", e);
@@ -133,7 +142,10 @@ async function initDashboard() {
     const graphique = document.getElementById("graphique-semaine");
     if (graphique) {
       graphique.innerHTML = Object.entries(data.livraisons_par_jour)
-        .map(([date, qte]) => `<div class="barre" style="height:${qte}px" title="${formaterDate(date)} : ${qte} kg"></div>`)
+        .map(
+          ([date, qte]) =>
+            `<div class="barre" style="height:${qte}px" title="${formaterDate(date)} : ${qte} kg"></div>`,
+        )
         .join("");
     }
   } catch (e) {
@@ -157,7 +169,8 @@ async function initMembres() {
     _membresCache = data.membres;
     appliquerFiltresMembres();
   } catch (e) {
-    conteneur.innerHTML = "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
+    conteneur.innerHTML =
+      "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
     console.error(e);
   }
 }
@@ -223,7 +236,8 @@ async function chargerLivraisons() {
     _livraisonsCache = data;
     afficherLivraisons(_livraisonsCache);
   } catch (e) {
-    conteneur.innerHTML = "<tr><td colspan='4'>Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).</td></tr>";
+    conteneur.innerHTML =
+      "<tr><td colspan='4'>Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).</td></tr>";
     console.error(e);
   }
 }
@@ -238,7 +252,7 @@ function afficherLivraisons(livraisons) {
       <td>${l.culture}</td>
       <td>${l.quantite} kg</td>
       <td>${formaterDate(l.date)}</td>
-    </tr>`
+    </tr>`,
     )
     .join("");
 }
@@ -277,7 +291,10 @@ function initFormLivraison() {
       const reponse = await fetch(`${API_URL}/livraisons`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...donnees, quantite: Number(donnees.quantite) }),
+        body: JSON.stringify({
+          ...donnees,
+          quantite: Number(donnees.quantite),
+        }),
       });
       const resultat = await reponse.json();
 
@@ -318,16 +335,19 @@ async function chargerPaiements() {
         <td>${formaterMontant(p.montant)}</td>
         <td>${p.mode_paiement || ""}</td>
         <td>${formaterDate(p.date)}</td>
-      </tr>`
+      </tr>`,
       )
       .join("");
 
     const totalCible = document.getElementById("total-paiements");
     if (totalCible) {
-      totalCible.textContent = formaterMontant(calculerTotalPaiements(data.paiements));
+      totalCible.textContent = formaterMontant(
+        calculerTotalPaiements(data.paiements),
+      );
     }
   } catch (e) {
-    conteneur.innerHTML = "<tr><td colspan='3'>Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).</td></tr>";
+    conteneur.innerHTML =
+      "<tr><td colspan='3'>Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).</td></tr>";
     console.error(e);
   }
 }
@@ -394,7 +414,8 @@ async function initVentesStock() {
       return;
     }
   } catch (e) {
-    cible.innerHTML = "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
+    cible.innerHTML =
+      "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
     console.error(e);
     return;
   }
@@ -417,7 +438,8 @@ async function initVentesStock() {
       })
       .join("");
   } catch (e) {
-    cible.innerHTML = "Cartes de stock : vérifiez getBadgeStock() dans functions.js.";
+    cible.innerHTML =
+      "Cartes de stock : vérifiez getBadgeStock() dans functions.js.";
     console.error(e);
   }
 
@@ -432,7 +454,7 @@ async function initVentesStock() {
           <td>${v.culture}</td>
           <td>${v.quantite} kg</td>
           <td>${formaterMontant(v.prix_kg)}/kg</td>
-        </tr>`
+        </tr>`,
         )
         .join("");
     }
@@ -455,7 +477,8 @@ async function initStatistiques() {
       return;
     }
   } catch (e) {
-    cible.innerHTML = "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
+    cible.innerHTML =
+      "Impossible de joindre l'API. Vérifiez que le backend est démarré (python app.py).";
     console.error(e);
     return;
   }
@@ -466,7 +489,8 @@ async function initStatistiques() {
       .map((c) => `<li>${c.nom} — ${c.volume_total} kg</li>`)
       .join("");
   } catch (e) {
-    cible.innerHTML = "Classement : vérifiez trierClassementParVolume() dans functions.js.";
+    cible.innerHTML =
+      "Classement : vérifiez trierClassementParVolume() dans functions.js.";
     console.error(e);
   }
 
@@ -474,12 +498,14 @@ async function initStatistiques() {
     const tableauCultures = document.getElementById("tableau-cultures");
     if (tableauCultures) {
       tableauCultures.innerHTML = Object.entries(data.statistiques_par_culture)
-        .map(([culture, stats]) => `
+        .map(
+          ([culture, stats]) => `
         <tr>
           <td>${culture}</td>
           <td>${stats.volume_total} kg</td>
           <td>${formaterMontant(stats.valeur_totale)}</td>
-        </tr>`)
+        </tr>`,
+        )
         .join("");
     }
   } catch (e) {
@@ -488,7 +514,11 @@ async function initStatistiques() {
 
   try {
     const topAcheteurCible = document.getElementById("top-acheteur");
-    if (topAcheteurCible && data.top_acheteur && data.top_acheteur.acheteur_nom) {
+    if (
+      topAcheteurCible &&
+      data.top_acheteur &&
+      data.top_acheteur.acheteur_nom
+    ) {
       topAcheteurCible.textContent = `${data.top_acheteur.acheteur_nom} (${data.top_acheteur.volume_total} kg achetés)`;
     }
   } catch (e) {
@@ -502,9 +532,13 @@ async function initRapportBailleur() {
   try {
     const reponse = await fetch(`${API_URL}/rapport-bailleur`);
     const r = await reponse.json();
-    document.getElementById("rb-volume").textContent = r.volume_total_periode + " kg";
-    document.getElementById("rb-montant").textContent = formaterMontant(r.montant_ventes_periode);
-    document.getElementById("rb-taux").textContent = r.taux_regularite_paiements + " %";
+    document.getElementById("rb-volume").textContent =
+      r.volume_total_periode + " kg";
+    document.getElementById("rb-montant").textContent = formaterMontant(
+      r.montant_ventes_periode,
+    );
+    document.getElementById("rb-taux").textContent =
+      r.taux_regularite_paiements + " %";
     document.getElementById("rb-membres").textContent = r.nb_membres_actifs;
   } catch (e) {
     console.error(e);
@@ -521,7 +555,8 @@ async function initComptes() {
   const utilisateur = obtenirUtilisateurConnecte();
   if (!utilisateur) {
     if (accesRefuse) {
-      accesRefuse.textContent = "Vous devez être connecté(e) pour accéder à cette page.";
+      accesRefuse.textContent =
+        "Vous devez être connecté(e) pour accéder à cette page.";
       accesRefuse.hidden = false;
     }
     if (form) form.hidden = true;
@@ -554,10 +589,14 @@ async function initComptes() {
       const reponse = await fetch(`${API_URL}/utilisateurs`);
       const comptes = await reponse.json();
       listeCible.innerHTML = comptes
-        .map((c) => `<tr><td>${c.nom_utilisateur}</td><td>${c.nom_complet}</td><td>${c.role}</td></tr>`)
+        .map(
+          (c) =>
+            `<tr><td>${c.nom_utilisateur}</td><td>${c.nom_complet}</td><td>${c.role}</td></tr>`,
+        )
         .join("");
     } catch (e) {
-      listeCible.innerHTML = "<tr><td colspan='3'>Impossible de charger les comptes.</td></tr>";
+      listeCible.innerHTML =
+        "<tr><td colspan='3'>Impossible de charger les comptes.</td></tr>";
       console.error(e);
     }
   }
@@ -613,7 +652,8 @@ async function initNouveauMembre() {
     try {
       const reponse = await fetch(`${API_URL}/villages`);
       const villages = await reponse.json();
-      selectVillage.innerHTML = `<option value="">-- Choisir un village --</option>` +
+      selectVillage.innerHTML =
+        `<option value="">-- Choisir un village --</option>` +
         villages.map((v) => `<option value="${v}">${v}</option>`).join("");
     } catch (e) {
       console.error("Impossible de charger les villages :", e);
@@ -629,11 +669,16 @@ async function initNouveauMembre() {
       contact: document.getElementById("nm-contact").value,
     };
     const erreursCible = document.getElementById("erreurs-nouveau-membre");
-    const succesCible = document.getElementById("message-succes-nouveau-membre");
+    const succesCible = document.getElementById(
+      "message-succes-nouveau-membre",
+    );
 
     const validation = validerFormulaireNouveauMembre(donnees);
     if (!validation.valide) {
-      erreursCible.innerHTML = "<ul>" + validation.erreurs.map((e) => `<li>${e}</li>`).join("") + "</ul>";
+      erreursCible.innerHTML =
+        "<ul>" +
+        validation.erreurs.map((e) => `<li>${e}</li>`).join("") +
+        "</ul>";
       erreursCible.hidden = false;
       succesCible.hidden = true;
       return;
@@ -654,7 +699,10 @@ async function initNouveauMembre() {
         form.reset();
         initMembres();
       } else {
-        erreursCible.innerHTML = "<ul>" + resultat.anomalies.map((a) => `<li>${a}</li>`).join("") + "</ul>";
+        erreursCible.innerHTML =
+          "<ul>" +
+          resultat.anomalies.map((a) => `<li>${a}</li>`).join("") +
+          "</ul>";
         erreursCible.hidden = false;
         succesCible.hidden = true;
       }

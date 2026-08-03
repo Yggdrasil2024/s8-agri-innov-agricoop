@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AgriCoop Connect — Connexion</title>
   <link rel="stylesheet" href="login.css">
 </head>
+
 <body>
 
   <!-- =====================================================================
@@ -18,14 +20,24 @@
        *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
        ===================================================================== -->
   <main>
-    <form id="form-login">
-      <input type="text" id="l-nom-utilisateur" placeholder="Nom d'utilisateur">
-      <input type="password" id="l-mot-de-passe" placeholder="Mot de passe">
-      <button type="submit">Se connecter</button>
-    </form>
+    <div class="main-wrapper card">
+      <h2>🌿 AgriCoop Connect</h2>
+      <form id="form-login">
+        <div class="form-field-container">
+          <label for="l-nom-utilisateur">Votre nom d'utilisateur</label>
+          <input type="text" id="l-nom-utilisateur" placeholder="Nom d'utilisateur">
+        </div>
+        <div class="form-field-container">
+          <label for="l-mot-de-passe">Votre mot de passe</label>
+          <input type="password" id="l-mot-de-passe" placeholder="Mot de passe">
+        </div>
+        <div class="form-field-container">
+          <button type="submit">Se connecter</button>
+        </div>
+      </form>
 
-    <div id="message-erreur-login" hidden></div>
-
+      <div id="message-erreur-login" hidden></div>
+    </div>
     <!-- AIDE — TODO (Dev FS1) : rappel optionnel que les comptes sont créés
          par la Secrétaire (pas d'auto-inscription) -->
   </main>
@@ -34,4 +46,5 @@
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
 </body>
+
 </html>
