@@ -166,12 +166,14 @@
         const mode = modeSelect.value;
 
         // EX-16 (champs) + EX-17 (surpaiement) : validation via functions.js
-        const resultat = validerFormulairePaiement({ membre, montant, mode, soldeDu });
+        const resultat = validerFormulairePaiement({ membre, montant, mode});
         if (!resultat.valide) {
           erreurDiv.textContent = resultat.message;
           erreurDiv.hidden = false;
           return null;
         }
+
+
 
         // EX-18 : calcul en temps réel du reste à verser
         const nouveauSolde = soldeDu !== null ? soldeDu - montant : null;

@@ -353,34 +353,26 @@ function trierLivraisonsParDate(livraisons) {
      - mode_paiement doit être "Espèces" ou "Mobile Money"
    Retourne : true si tout est valide, false sinon. */
 function validerFormulairePaiement(donnees) {
-  const { membre, montant, mode, soldeDu } = donnees;
+  if (!donnees) return false;
 
-  if (!membre) {
-    return { valide: false, message: "Veuillez choisir un membre." };
+  if (!donnees.membre_id) {
+    return false;
   }
 
   if (
-    isNaN(montant) ||
-    montant === null ||
-    montant === undefined ||
-    montant <= 0
+    isNaN(donnees.montant) ||
+    donnees.montant === null ||
+    donnees.montant === undefined ||
+    donnees.montant <= 0
   ) {
-    return { valide: false, message: "Montant vide." };
+    return false;
   }
 
-  if (!mode) {
-    return { valide: false, message: "Veuillez choisir un mode de paiement." };
+  if (donnees.mode_paiement !== "Espèces" && donnees.mode_paiement !== "Mobile Money") {
+    return false;
   }
 
-  // EX-17 : blocage strict du surpaiement (Paiement <= Solde Dû)
-  if (soldeDu !== null && soldeDu !== undefined && montant > soldeDu) {
-    return {
-      valide: false,
-      message: `Le montant dépasse le solde dû (${soldeDu.toLocaleString("fr-FR")} FCFA).`,
-    };
-  }
-
-  return { valide: true, message: "" };
+  return true;
 }
 
 /* [Dev FS4 — Paiements — niveau S7/S8 : boucle + accumulateur]
@@ -422,8 +414,6 @@ function getBadgeStock(quantiteDisponible) {
    Retourne  : une chaîne de caractères, le nombre suivi de " FCFA".
    Exemple   : formaterMontant(23000) -> "23000 FCFA" */
 function formaterMontant(montant) {
-  // TODO : à compléter
-
   return `${montant} FCFA`;
 }
 
