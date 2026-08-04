@@ -267,7 +267,7 @@
             mode_paiement,
           });
 
-          if (!valide) {
+          if (!valide || montant > soldeDu) {
             // messages d'erreur
             if (!membre_id) {
               erreurDiv.textContent = "Veuillez sélectionner un membre.";
