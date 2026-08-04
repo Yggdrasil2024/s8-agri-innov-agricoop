@@ -5,15 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AgriCoop Connect — Tableau de bord</title>
   <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-  <!-- =====================================================================
-       NAVIGATION — TODO (Dev FS1)
-       Construire un menu de navigation vers les 8 pages du site.
-       Structure attendue : <nav> avec liens vers les autres modules.
-       Doit inclure un menu burger pour mobile.
-       ===================================================================== -->
   <!-- Bouton burger (mobile) -->
   <button class="burger" id="burger-btn" aria-label="Menu" aria-expanded="false">
     <span></span>
@@ -23,89 +18,111 @@
 
   <!-- Overlay sombre (mobile) -->
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
-   <aside class="sidebar" id="sidebar">
+
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <span class="logo-text">🌿 AgriCoop COMAKI</span>
     </div>
+
     <nav class="sidebar-nav" id="main-nav">
       <ul class="nav-list">
-        <li><a href="../dashboard/dashboard.html" class="nav-link active">Tableau de bord</a></li>
-        <li><a href="../membres/membres.html" class="nav-link">Membres</a></li>
-        <li><a href="../livraisons/livraisons.html" class="nav-link">Livraisons</a></li>
-        <li><a href="../paiements/paiements.html" class="nav-link">Paiements</a></li>
-        <li><a href="../ventes/ventes.html" class="nav-link">Ventes</a></li>
-        <li><a href="../statistiques/statistiques.html" class="nav-link">Statistiques</a></li>
-        <li><a href="../comptes/comptes.html" class="nav-link">Comptes</a></li>
-        <li><a href="../login/login.html" class="nav-link">Connexion</a></li>
+        <li>
+          <a href="../dashboard/dashboard.html" class="nav-link active">
+            <i class="fas fa-home"></i> Tableau de bord
+          </a>
+        </li>
+        <li>
+          <a href="../membres/membres.html" class="nav-link">
+            <i class="fas fa-users"></i> Membres
+          </a>
+        </li>
+        <li>
+          <a href="../livraisons/livraisons.html" class="nav-link">
+            <i class="fas fa-truck"></i> Livraisons
+          </a>
+        </li>
+        <li>
+          <a href="../paiements/paiements.html" class="nav-link">
+            <i class="fas fa-credit-card"></i> Paiements
+          </a>
+        </li>
+        <li>
+          <a href="../ventes/ventes.html" class="nav-link">
+            <i class="fas fa-chart-line"></i> Ventes
+          </a>
+        </li>
+        <li>
+          <a href="../statistiques/statistiques.html" class="nav-link">
+            <i class="fas fa-chart-bar"></i> Statistiques
+          </a>
+        </li>
+        <li>
+          <a href="../comptes/comptes.html" class="nav-link">
+            <i class="fas fa-user-cog"></i> Comptes
+          </a>
+        </li>
+        <li>
+          <a href="../login/login.html" class="nav-link">
+            <i class="fas fa-sign-in-alt"></i> Connexion
+          </a>
+        </li>
       </ul>
     </nav>
   </aside>
 
   <main>
+    <h1>Tableau de bord</h1>
+    <p class="subtitle">Indicateurs clés de la coopérative</p>
 
-
-
-  <main>
     <!-- =====================================================================
          CARTES INDICATEURS — TODO (Dev FS1)
-         Construire 4 cartes affichant les indicateurs clés du tableau de bord.
-         Structure attendue : conteneur avec 4 éléments (stock, montant dû,
-         membres actifs, livraisons du mois).
-         Layout : Flexbox ou Grid, responsive (1 colonne mobile, 2-4 desktop).
-
          *** NE PAS MODIFIER les id ci-dessous — main.js les utilise ***
          ===================================================================== -->
-   
-    <h2>Indicateurs clés</h2>
-    <div id="dashboard-cartes">
-      <div class="carte">
-        <span class="carte-titre">Stock total</span>
-        <div id="carte-stock"></div>
+    <section class="section-indicateurs">
+      <div id="dashboard-cartes">
+        <div class="carte">
+          <span class="carte-titre">Stock total</span>
+          <div id="carte-stock"></div>
+        </div>
+        <div class="carte">
+          <span class="carte-titre">Montant dû</span>
+          <div id="carte-montant-du"></div>
+        </div>
+        <div class="carte">
+          <span class="carte-titre">Membres actifs</span>
+          <div id="carte-membres"></div>
+        </div>
+        <div class="carte">
+          <span class="carte-titre">Livraisons du mois</span>
+          <div id="carte-livraisons"></div>
+        </div>
       </div>
-      <div class="carte">
-        <span class="carte-titre">Montant dû</span>
-        <div id="carte-montant-du"></div>
-      </div>
-      
-     <div class="carte">
-        <span class="carte-titre">Membres actifs</span>
-         <div id="carte-membres"></div>
-      </div>
-
-      <div class="carte">
-        <span class="carte-titre">Livraisons du mois</span>
-        <div id="carte-livraisons"></div>
-      </div>
-    </div>
+    </section>
 
     <!-- =====================================================================
          JOURS À FORTE ACTIVITÉ — TODO (Dev FS1)
-         Afficher le nombre de jours dépassant le seuil de 80 kg.
-
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <div>
+    <section class="section-jours">
       <h2>Jours à forte activité</h2>
       <div id="jours-actifs"></div>
-    </div>
+    </section>
 
     <!-- =====================================================================
          GRAPHIQUE SEMAINE — TODO (Dev FS1)
-         Conteneur pour un graphique en barres (barres générées par main.js).
-         Le dev doit styliser les barres via CSS (.barre).
-
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-    <div id="graphiques">
+    <section class="section-graphique">
       <h2>Graphe de livraisons de la semaine</h2>
-        <div id="graphique-semaine">
-    </div>
+      <div id="graphique-semaine"></div>
+    </section>
   </main>
 
   <!-- NE PAS MODIFIER — scripts de connexion au backend -->
   <script src="../functions.js"></script>
   <script src="../main.js"></script>
-    <!-- Script sidebar / burger (UI uniquement) -->
+
+  <!-- Script sidebar / burger (UI uniquement) -->
   <script>
     const burger = document.getElementById('burger-btn');
     const sidebar = document.getElementById('sidebar');

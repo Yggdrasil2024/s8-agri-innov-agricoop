@@ -1,63 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgriCoop Connect — Livraisons</title>
-  <link rel="stylesheet" href="livraisons.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>agricoop connect — Livraisons</title>
+    <link rel="stylesheet" href="livraisons.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Bouton burger (mobile) -->
+    <button
+      class="burger"
+      id="burger-btn"
+      aria-label="Menu"
+      aria-expanded="false"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-  <div class="layout">
-    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle-input">
+    <!-- Overlay sombre (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <aside class="sidebar">
-      <div class="sidebar-brand">🌿 AgriCoop COMAKI</div>
-      <nav class="sidebar-nav">
-        <a href="../dashboard/dashboard.html">Dashboard</a>
-        <a href="../membres/membres.html">Membres</a>
-        <a href="../livraisons/livraisons.html" class="active">Livraisons</a>
-        <a href="../paiements/paiements.html">Paiements</a>
-        <a href="../ventes/ventes.html">Ventes</a>
-        <a href="../statistiques/statistiques.html">Statistiques</a>
-        <a href="../comptes/comptes.html">Comptes</a>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-text">🌿 AgriCoop COMAKI</span>
+      </div>
+
+      <nav class="sidebar-nav" id="main-nav">
+        <ul class="nav-list">
+          <li>
+            <a href="../dashboard/dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i> Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a href="../membres/membres.html" class="nav-link">
+              <i class="fas fa-users"></i> Membres
+            </a>
+          </li>
+          <li>
+            <a href="../livraisons/livraisons.html" class="nav-link active">
+              <i class="fas fa-truck"></i> Livraisons
+            </a>
+          </li>
+          <li>
+            <a href="../paiements/paiements.html" class="nav-link">
+              <i class="fas fa-credit-card"></i> Paiements
+            </a>
+          </li>
+          <li>
+            <a href="../ventes/ventes.html" class="nav-link">
+              <i class="fas fa-chart-line"></i> Ventes
+            </a>
+          </li>
+          <li>
+            <a href="../statistiques/statistiques.html" class="nav-link">
+              <i class="fas fa-chart-bar"></i> Statistiques
+            </a>
+          </li>
+          <li>
+            <a href="../comptes/comptes.html" class="nav-link">
+              <i class="fas fa-user-cog"></i> Comptes
+            </a>
+          </li>
+          <li>
+            <a href="../login/login.html" class="nav-link">
+              <i class="fas fa-sign-in-alt"></i> Connexion
+            </a>
+          </li>
+        </ul>
       </nav>
     </aside>
 
-    <div class="content-area">
-      <header class="topbar">
-        <label for="sidebar-toggle" class="sidebar-toggle-label">☰</label>
-        <div>
-          <h1>Livraisons</h1>
-          <p class="sous-titre">Enregistrer une nouvelle livraison de récolte</p>
-        </div>
-      </header>
+    <main>
+      <h1>Livraisons</h1>
+      <p class="subtitle">Enregistrer une nouvelle livraison de récolte</p>
 
-      <main>
-        <!-- *** NE PAS MODIFIER les id ci-dessous – main.js les utilise *** -->
-        <form id="form-livraison">
-          <select id="f-membre">
-            <option value="">-- Choisir un membre --</option>
-          </select>
+      <!-- *** NE PAS MODIFIER les id ci-dessous – main.js les utilise *** -->
+      <form id="form-livraison">
+        <select id="f-membre">
+          <option value="">-- Choisir un membre --</option>
+        </select>
 
-          <select id="f-culture">
-            <option value="">-- Choisir une culture --</option>
-            <option value="Manioc">Manioc</option>
-            <option value="Maïs">Maïs</option>
-            <option value="Arachide">Arachide</option>
-          </select>
+        <select id="f-culture">
+          <option value="">-- Choisir une culture --</option>
+          <option value="Manioc">Manioc</option>
+          <option value="Maïs">Maïs</option>
+          <option value="Arachide">Arachide</option>
+        </select>
 
-          <input type="number" id="f-quantite" min="1" placeholder="Quantité (kg)">
+        <input
+          type="number"
+          id="f-quantite"
+          min="1"
+          placeholder="Quantité (kg)"
+        />
 
-          <button type="submit">Enregistrer</button>
-        </form>
+        <button type="submit">Enregistrer</button>
+      </form>
 
-        <div id="message-erreur-livraison" class="message message-erreur" hidden></div>
-        <div id="message-succes-livraison" class="message message-succes" hidden></div>
-        <!-- *** fin de la zone protégée *** -->
+      <div
+        id="message-erreur-livraison"
+        class="message message-erreur"
+        hidden
+      ></div>
+      <div
+        id="message-succes-livraison"
+        class="message message-succes"
+        hidden
+      ></div>
+      <!-- *** fin de la zone protégée *** -->
 
-        <button id="btn-trier-livraisons">Trier par date</button>
+      <button id="btn-trier-livraisons" type="button">Trier par date</button>
 
+      <div class="table-wrapper">
         <table>
           <thead>
             <tr>
@@ -69,12 +130,31 @@
           </thead>
           <tbody id="liste-livraisons"></tbody>
         </table>
-      </main>
-    </div>
-  </div>
+      </div>
+    </main>
 
-  <!-- NE PAS MODIFIER – scripts de connexion au backend -->
-  <script src="../functions.js"></script>
-  <script src="../main.js"></script>
-</body>
+    <!-- NE PAS MODIFIER – scripts de connexion au backend -->
+    <script src="../functions.js"></script>
+    <script src="../main.js"></script>
+
+    <!-- Script sidebar / burger (UI uniquement) -->
+    <script>
+      const burger = document.getElementById("burger-btn");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebar-overlay");
+
+      function toggleSidebar() {
+        const open = sidebar.classList.toggle("open");
+        burger.setAttribute("aria-expanded", open);
+        if (overlay) overlay.classList.toggle("visible", open);
+      }
+
+      if (burger && sidebar) {
+        burger.addEventListener("click", toggleSidebar);
+      }
+      if (overlay) {
+        overlay.addEventListener("click", toggleSidebar);
+      }
+    </script>
+  </body>
 </html>

@@ -1,94 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>agricoop connect — Ventes & Stock</title>
+    <link rel="stylesheet" href="ventes.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Bouton burger (mobile) -->
+    <button
+      class="burger"
+      id="burger-btn"
+      aria-label="Menu"
+      aria-expanded="false"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgriCoop Connect — Ventes & Stock</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="ventes.css">
-</head>
+    <!-- Overlay sombre (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<body>
-
-  <main>
-
-
-    <aside class="sidebar">
-      <div class="caption">
-        <h1><i>🌿</i><span> AgriCoop Connect</span></h1>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-text">🌿 AgriCoop COMAKI</span>
       </div>
 
-      <input id="sidebar-toggler" type="checkbox">
-      <label for="sidebar-toggler">
-        <i class="fa-solid fa-bars"></i>
-      </label>
-
-
-      <ul id="menu" class="menu">
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class=""></i>
-            <span>Dashboard</span>
-          </a>
-        </li>
-
-        <li class="menu-item">
-          <a href="../comptes/comptes.html" class="menu-link">
-            <i class=""></i>
-            <span>Comptes</span>
-          </a>
-        </li>
-
-        <li class="menu-item">
-          <a href="../livraisons/livraisons.html" class="menu-link">
-            <i class=""></i>
-            <span>Livraisons</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="../membres/membres.html" class="menu-link">
-            <i class=""></i>
-            <span>Membres</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="../paiements/paiements.html" class="menu-link">
-            <i class=""></i>
-            <span>Paiements</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="../ventes/ventes.html" class="menu-link">
-            <i class=""></i>
-            <span>Ventes</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="../statistiques/statistiques.html" class="menu-link">
-            <i class=""></i>
-            <span>Statistiques</span>
-          </a>
-        </li>
-      </ul>
-
-      <form action="">
-        <button id="submit" type="submit">
-          Deconnexion
-        </button>
-      </form>
+      <nav class="sidebar-nav" id="main-nav">
+        <ul class="nav-list">
+          <li>
+            <a href="../dashboard/dashboard.html" class="nav-link">
+              <i class="fas fa-home"></i> Tableau de bord
+            </a>
+          </li>
+          <li>
+            <a href="../membres/membres.html" class="nav-link">
+              <i class="fas fa-users"></i> Membres
+            </a>
+          </li>
+          <li>
+            <a href="../livraisons/livraisons.html" class="nav-link">
+              <i class="fas fa-truck"></i> Livraisons
+            </a>
+          </li>
+          <li>
+            <a href="../paiements/paiements.html" class="nav-link">
+              <i class="fas fa-credit-card"></i> Paiements
+            </a>
+          </li>
+          <li>
+            <a href="../ventes/ventes.html" class="nav-link active">
+              <i class="fas fa-chart-line"></i> Ventes
+            </a>
+          </li>
+          <li>
+            <a href="../statistiques/statistiques.html" class="nav-link">
+              <i class="fas fa-chart-bar"></i> Statistiques
+            </a>
+          </li>
+          <li>
+            <a href="../comptes/comptes.html" class="nav-link">
+              <i class="fas fa-user-cog"></i> Comptes
+            </a>
+          </li>
+          <li>
+            <a href="../login/login.html" class="nav-link">
+              <i class="fas fa-sign-in-alt"></i> Connexion
+            </a>
+          </li>
+        </ul>
+      </nav>
     </aside>
 
-    <div class="main-container">
-      <section class="header">
-        <div class="section-container">
-          <h1>Ventes</h1>
-          <p>enregistrer et visualiser l'etat des ventes et des stocks.</p>
-        </div>
-      </section>
+    <main>
+      <h1>Ventes</h1>
+      <p class="subtitle">
+        Enregistrer et visualiser l’état des ventes et des stocks
+      </p>
 
-      <section class="stocks">
-        <!-- =====================================================================
+      <!-- =====================================================================
          CARTES STOCK — TODO (Dev FS5)
          Le contenu est injecté par main.js (une carte par culture avec
          badge et barre de remplissage). Le dev stylise .card, .badge,
@@ -96,78 +91,106 @@
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-        <div class="section-container">
-          <h2 class="stock-label">Etat des stocks</h2>
-          <div id="cartes-stock"></div>
-        </div>
-
+      <section class="section-stocks">
+        <h2>État des stocks</h2>
+        <div id="cartes-stock"></div>
       </section>
 
-      <section class="sales">
-        <div class="section-container">
-          <h2 class="sales-label">Historiques de ventes</h2>
-          <!-- =====================================================================
+      <!-- =====================================================================
+         FORMULAIRE NOUVELLE VENTE
+         ===================================================================== -->
+      <section class="section-form">
+        <h2>Enregistrer une vente</h2>
+        <form id="form-vente">
+          <div class="form-group">
+            <label for="client">Acheteur</label>
+            <input
+              type="text"
+              id="client"
+              placeholder="Ex : Christine"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="culture">Culture</label>
+            <select id="culture" required>
+              <option value="">-- Choisir une culture --</option>
+              <option value="Arachide">Arachide</option>
+              <option value="Manioc">Manioc</option>
+              <option value="Maïs">Maïs</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="quantité">Quantité (kg)</label>
+            <input
+              type="number"
+              id="quantité"
+              placeholder="Ex : 450"
+              min="1"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="prix_negocier">Prix négocié (FCFA/kg)</label>
+            <input
+              type="number"
+              id="prix_negocier"
+              placeholder="Ex : 350"
+              min="1"
+              required
+            />
+          </div>
+
+          <button type="submit">Enregistrer la vente</button>
+        </form>
+      </section>
+
+      <!-- =====================================================================
          TABLEAU DES VENTES — TODO (Dev FS5)
 
          *** NE PAS MODIFIER l'id ci-dessous — main.js l'utilise ***
          ===================================================================== -->
-          <div class="table-wrapper">
-            <table>
-              <!-- TODO (Dev FS5) : en-têtes (Acheteur, Culture, Quantité, Prix/kg) -->
-              <thead>
-                <tr>
-                  <th>Acheteur</th>
-                  <th>Culture</th>
-                  <th>Quantité</th>
-                  <th>Prix/kg</th>
-                </tr>
-              </thead>
-              <tbody id="liste-ventes"></tbody>
-            </table>
-          </div>
+      <section class="section-table">
+        <h2>Historique des ventes</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Acheteur</th>
+                <th>Culture</th>
+                <th>Quantité</th>
+                <th>Prix/kg</th>
+              </tr>
+            </thead>
+            <tbody id="liste-ventes"></tbody>
+          </table>
         </div>
       </section>
+    </main>
 
-      <section class="new-sale">
-        <div class="section-container">
-          <h2>Enregistrer une vente</h2>
-          <form action="#">
-            <div class="form-field-container">
-              <label for="client">Acheteur</label>
-              <input placeholder="Ex: Christine" id="client" type="text" required>
-            </div>
+    <!-- NE PAS MODIFIER — scripts de connexion au backend -->
+    <script src="../functions.js"></script>
+    <script src="../main.js"></script>
+    <script>
+      const burger = document.getElementById("burger-btn");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("sidebar-overlay");
 
-            <div class="form-field-container">
-              <label for="culture">culture</label>
-              <select class="crops-selector" name="culture" id="culture" required>
-                <option value="Arachide">Arachide</option>
-                <option value="Manioc">Manioc</option>
-                <option value="Maïs">Maïs</option>
-              </select>
-            </div>
+      function toggleSidebar() {
+        const open = sidebar.classList.toggle("open");
+        burger.setAttribute("aria-expanded", open);
+        if (overlay) overlay.classList.toggle("visible", open);
+      }
 
-            <div class="form-field-container">
-              <label for="quantité">Quantité (kg)</label>
-              <input placeholder="Ex: 450" id="quantité" type="number" required>
-            </div>
-
-            <div class="form-field-container">
-              <label for="prix_negocier">Prix négocier (FCFA/kg)</label>
-              <input placeholder="Ex: 350" id="prix_negocier" type="number" required>
-            </div>
-
-            <div class="form-field-container">
-              <button type="submit">Enregistrer la vente</button>
-            </div>
-          </form>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <!-- NE PAS MODIFIER — scripts de connexion au backend -->
-  <script src="../functions.js"></script>
-  <script src="../main.js"></script>
-</body>
-
+      if (burger && sidebar) {
+        burger.addEventListener("click", toggleSidebar);
+      }
+      if (overlay) {
+        overlay.addEventListener("click", toggleSidebar);
+      }
+    </script>
+  </body>
 </html>

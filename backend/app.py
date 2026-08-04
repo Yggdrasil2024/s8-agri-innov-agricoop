@@ -2,7 +2,7 @@
 ========================================================================
   APP.PY  —  FICHIER PRÉ-ÉCRIT — NE PAS MODIFIER
 ========================================================================
-Démarre l'API AgriCoop Connect. Lancez :   python app.py
+Démarre l'API agricoop connect. Lancez :   python app.py
 Puis testez dans le navigateur :
    http://localhost:5000/api/dashboard
    http://localhost:5000/api/membres
@@ -49,7 +49,7 @@ def gerer_erreur(erreur):
 
 @app.route("/")
 def home():
-    return {"message": "API AgriCoop Connect — Coopérative COMAKI. Voir /api/dashboard, /api/membres, "
+    return {"message": "API agricoop connect — Coopérative COMAKI. Voir /api/dashboard, /api/membres, "
                         "/api/livraisons, /api/paiements, /api/ventes-stock, /api/statistiques"}
 
 

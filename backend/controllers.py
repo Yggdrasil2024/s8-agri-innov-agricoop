@@ -5,7 +5,7 @@
 C'est ici que l'API "branche" vos fonctions de logic.py. Vous n'avez rien
 à toucher. Si vos fonctions dans logic.py sont correctes, ces contrôleurs
 renverront automatiquement les bons résultats pour les 8 modules
-d'AgriCoop Connect.
+d'agricoop connect.
 ========================================================================
 """
 import json

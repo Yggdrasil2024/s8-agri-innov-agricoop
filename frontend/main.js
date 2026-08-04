@@ -1,7 +1,7 @@
 /* =====================================================================
    MAIN.JS  —  FICHIER PRÉ-ÉCRIT — NE PAS MODIFIER
    =====================================================================
-   AgriCoop Connect — Coopérative COMAKI, Kintélé
+   agricoop connect — Coopérative COMAKI, Kintélé
 
    Ce fichier détecte sur quelle page il s'exécute et branche vos
    fonctions (functions.js) au bon endroit : appel de l'API Flask,
