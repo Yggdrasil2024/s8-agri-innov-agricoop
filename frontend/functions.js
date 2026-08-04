@@ -405,7 +405,7 @@ function getBadgeStock(quantiteDisponible) {
     return "Épuisé";
   } else if (quantiteDisponible >= 1 && quantiteDisponible <= 49) {
     return "Stock faible";
-  } else if (quantiteDisponible >= 59) {
+  } else if (quantiteDisponible >= 50) {
     return "Disponible";
   }
 }
